@@ -414,9 +414,8 @@
             <!-- ===================================================== -->
             <!-- EMPLACEMENT PHOTO DE COUPLE : remplace le src ci-dessous -->
             <!-- ===================================================== -->
-            <img src="photos/photo_couple.jpg" alt="Notre photo de couple"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="placeholder" style="display:none;">📸 Remplace "photo_couple.jpg" par votre photo de couple</div>
+            <img id="couple-photo-img" src="" alt="Notre photo de couple" style="display:none;">
+            <div class="placeholder" id="couple-photo-placeholder" style="display:none;">📸 Photo manquante : photo_couple</div>
           </div>
 
           <!-- ===================================================== -->
@@ -445,7 +444,7 @@
 <div id="answer-overlay">
   <div class="overlay-card">
     <div class="overlay-photo-wrap">
-      <img id="overlay-img" src="" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <img id="overlay-img" src="" alt="" style="display:none;">
       <div class="placeholder" style="display:none;" id="overlay-placeholder"></div>
       <span class="verdict-badge" id="overlay-badge">Correct</span>
     </div>
@@ -462,11 +461,12 @@
    =========================================================================
    Toutes les données du quiz sont dans le tableau QUESTIONS ci-dessous.
    Pour chaque question tu peux modifier :
-     - photo      : le nom du fichier image (place l'image dans le même
-                    dossier que ce fichier HTML, ou adapte le chemin)
+     - photo      : le nom du fichier image (place l'image dans le dossier
+                    "photos", au même niveau que ce fichier HTML)
      - caption    : la légende affichée sous la photo
-     - correctAnswer : l'INDEX (0 = choix A, 1 = choix B, etc.) de la bonne
-                    réponse. Une valeur -1 signifie "à définir".
+     - correctAnswer : l'INDEX de la bonne réponse (0 = choix A, 1 = choix B,
+                    etc). Pour PLUSIEURS bonnes réponses, utilise un tableau
+                    entre crochets, ex: correctAnswer: [0, 1, 3]
    ========================================================================= */
 
 const QUESTIONS = [
@@ -474,55 +474,55 @@ const QUESTIONS = [
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui a dit \"Je t'aime\" en premier ?",
-    correctAnswer: 1, // <-- A DEFINIR : 0 = "Toi", 1 = "Moi"
+    correctAnswer: 1,
     choices: [
-      { label: "Toi", photo: "photos/q1_a.jpg", caption: "Non ce n'est pas moi" },
-      { label: "Moi", photo: "photos/q1_b.jpg", caption: "1er janvier j'oublierai jamais" },
+      { label: "Toi", photo: "q1_a", caption: "Non ce n'est pas moi" },
+      { label: "Moi", photo: "q1_b", caption: "1er janvier j'oublierai jamais" },
     ]
   },
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui a fait le premier pas ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "Toi", photo: "photos/q2_a.jpg", caption: "C'etais moi je l'avous" },
-      { label: "Moi", photo: "photos/q2_b.jpg", caption: "Enhan c'étais moi non grosse tête" },
+      { label: "Toi", photo: "q2_a", caption: "C'etais moi je l'avous" },
+      { label: "Moi", photo: "q2_b", caption: "Enhan c'étais moi non grosse tête" },
     ]
   },
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui est le plus jaloux ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "Toi", photo: "photos/q3_a.jpg", caption: "T'es à moi madame" },
-      { label: "Moi", photo: "photos/q3_b.jpg", caption: "Faux" },
+      { label: "Toi", photo: "q3_a", caption: "T'es à moi madame" },
+      { label: "Moi", photo: "q3_b", caption: "Faux" },
     ]
   },
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui boude le plus longtemps après une dispute ?",
-    correctAnswer: 1, // MODIFIER ICI
+    correctAnswer: 1,
     choices: [
-      { label: "Toi", photo: "photos/q4_a.jpg", caption: "Pas moi tcha" },
-      { label: "Moi", photo: "photos/q4_b.jpg", caption: "les laisse moi, ne me parle plus etc" },
+      { label: "Toi", photo: "q4_a", caption: "Pas moi tcha" },
+      { label: "Moi", photo: "q4_b", caption: "les laisse moi, ne me parle plus etc" },
     ]
   },
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui est le plus romantique ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "Toi", photo: "photos/q5_a.jpg", caption: "Prince Dadju pour vous servir" },
-      { label: "Moi", photo: "photos/q5_b.jpg", caption: "Pourquoi tu mens même" },
+      { label: "Toi", photo: "q5_a", caption: "Prince Dadju pour vous servir" },
+      { label: "Moi", photo: "q5_b", caption: "Pourquoi tu mens même" },
     ]
   },
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui est le plus pervers ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "Toi", photo: "photos/q6_a.jpg", caption: "Oui c'est moi y as un problème, d'ailleur vient ont vas mougou" },
-      { label: "Moi", photo: "photos/q6_b.jpg", caption: "Menteuse" },
+      { label: "Toi", photo: "q6_a", caption: "Oui c'est moi y as un problème, d'ailleur vient ont vas mougou" },
+      { label: "Moi", photo: "q6_b", caption: "Menteuse" },
     ]
   },
 
@@ -530,85 +530,85 @@ const QUESTIONS = [
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Quel est mon plus grand rêve ?",
-    correctAnswer: 3, // MODIFIER ICI
+    correctAnswer: 3,
     choices: [
-      { label: "Devenir cuisinier", photo: "photos/q7_a.jpg", caption: "yako" },
-      { label: "Devenir chanteur", photo: "photos/q7_b.jpg", caption: "Oui mais pas que" },
-      { label: "Être propriétaire d'un hôtel", photo: "photos/q7_c.jpg", caption: "Oui mais pas que" },
-      { label: "Associer hôtel et musique", photo: "photos/q7_d.jpg", caption: "Oui c'est moi le boss" },
+      { label: "Devenir cuisinier", photo: "q7_a", caption: "yako" },
+      { label: "Devenir chanteur", photo: "q7_b", caption: "Oui mais pas que" },
+      { label: "Être propriétaire d'un hôtel", photo: "q7_c", caption: "Oui mais pas que" },
+      { label: "Associer hôtel et musique", photo: "q7_d", caption: "Oui c'est moi le boss" },
     ]
   },
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Quelle est ma plus grande phobie ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "L'eau", photo: "photos/q8_a.jpg", caption: "C'est pour venir dis que je ne me lave pas ou bien" },
-      { label: "Le feu", photo: "photos/q8_b.jpg", caption: "..." },
-      { label: "Peur des petits espaces", photo: "photos/q8_c.jpg", caption: "..." },
-      { label: "Peur des grands espaces", photo: "photos/q8_d.jpg", caption: "..." },
+      { label: "L'eau", photo: "q8_a", caption: "C'est pour venir dis que je ne me lave pas ou bien" },
+      { label: "Le feu", photo: "q8_b", caption: "..." },
+      { label: "Peur des petits espaces", photo: "q8_c", caption: "..." },
+      { label: "Peur des grands espaces", photo: "q8_d", caption: "..." },
     ]
   },
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Je suis plutôt...",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "Introverti", photo: "photos/q9_a.jpg", caption: "ah que dire" },
-      { label: "Extraverti", photo: "photos/q9_b.jpg", caption: "Tu es sûr?" },
+      { label: "Introverti", photo: "q9_a", caption: "ah que dire" },
+      { label: "Extraverti", photo: "q9_b", caption: "Tu es sûr?" },
     ]
   },
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Qu'est-ce que j'aime le plus chez toi ?",
-    correctAnswer: [0, 1, 3], // MODIFIER ICI
+    correctAnswer: [0, 1, 3],
     choices: [
-      { label: "Ton cul", photo: "photos/q10_a.jpg", caption: "J'aime ton coeur aussi ma puce" },
-      { label: "Ta fidélité", photo: "photos/q10_b.jpg", caption: "Belle et fidèle que demander de plus " },
-      { label: "Ta lenteur", photo: "photos/q10_c.jpg", caption: "..." },
-      { label: "Ta sincérité", photo: "photos/q10_d.jpg", caption: "Reine " },
-      { label: "Quand tu me dis non", photo: "photos/q10_e.jpg", caption: "..." },
+      { label: "Ton cul", photo: "q10_a", caption: "J'aime ton coeur aussi ma puce" },
+      { label: "Ta fidélité", photo: "q10_b", caption: "Belle et fidèle que demander de plus " },
+      { label: "Ta lenteur", photo: "q10_c", caption: "..." },
+      { label: "Ta sincérité", photo: "q10_d", caption: "Reine " },
+      { label: "Quand tu me dis non", photo: "q10_e", caption: "..." },
     ]
   },
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Quelle est la partie de ton corps que j'aime le plus ?",
-    correctAnswer: 4, // MODIFIER ICI
+    correctAnswer: 4,
     choices: [
-      { label: "Ton cœur", photo: "photos/q11_a.jpg", caption: "..." },
-      { label: "Tes pieds", photo: "photos/q11_b.jpg", caption: "..." },
-      { label: "Ton ventre", photo: "photos/q11_c.jpg", caption: "..." },
-      { label: "Ton dos", photo: "photos/q11_d.jpg", caption: "..." },
-      { label: "Ton gros cul tout mou", photo: "photos/q11_e.jpg", caption: "j'aime quand je presse ton cui entre mes doigts" },
+      { label: "Ton cœur", photo: "q11_a", caption: "..." },
+      { label: "Tes pieds", photo: "q11_b", caption: "..." },
+      { label: "Ton ventre", photo: "q11_c", caption: "..." },
+      { label: "Ton dos", photo: "q11_d", caption: "..." },
+      { label: "Ton gros cul tout mou", photo: "q11_e", caption: "j'aime quand je presse ton cui entre mes doigts" },
     ]
   },
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Qu'est-ce que je ferai quand tu ne seras pas à la maison ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "Sentir tous tes caleçons sales", photo: "photos/q12_a.jpg", caption: "Non je refuse je ne suis pas comme ça" },
-      { label: "Attendre gentiment que tu reviennes", photo: "photos/q12_b.jpg", caption: "..." },
-      { label: "Prendre soin de la maison", photo: "photos/q12_c.jpg", caption: "..." },
-      { label: "Regarder la télé", photo: "photos/q12_d.jpg", caption: "..." },
+      { label: "Sentir tous tes caleçons sales", photo: "q12_a", caption: "Non je refuse je ne suis pas comme ça" },
+      { label: "Attendre gentiment que tu reviennes", photo: "q12_b", caption: "..." },
+      { label: "Prendre soin de la maison", photo: "q12_c", caption: "..." },
+      { label: "Regarder la télé", photo: "q12_d", caption: "..." },
     ]
   },
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "J'ai toujours rêvé d'avoir...",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 0,
     choices: [
-      { label: "Une fille", photo: "photos/q13_a.jpg", caption: "..." },
-      { label: "Un garçon", photo: "photos/q13_b.jpg", caption: "..." },
-      { label: "Un père", photo: "photos/q13_c.jpg", caption: "..." },
-      { label: "Une console PlayStation", photo: "photos/q13_d.jpg", caption: "..." },
+      { label: "Une fille", photo: "q13_a", caption: "..." },
+      { label: "Un garçon", photo: "q13_b", caption: "..." },
+      { label: "Un père", photo: "q13_c", caption: "..." },
+      { label: "Une console PlayStation", photo: "q13_d", caption: "..." },
     ]
   },
 ];
 
 // ===================================================== //
 // EMPLACEMENT LETTRE D'AMOUR — écris ton texte ici.
-// Utilise \n pour aller à la ligne.
+// Utilise \n dans la chaîne pour aller à la ligne.
 // ===================================================== //
 const LOVE_LETTER =
 `Mon amour,
@@ -620,6 +620,33 @@ Si tu lis ces mots, c'est que tu me connais par cœur (ou presque !).
 Je t'aime.`;
 
 const SCORE_TO_WIN = 12; // score minimum sur 13 pour débloquer la lettre
+
+// Extensions testées automatiquement pour chaque photo, dans cet ordre,
+// jusqu'à ce qu'une image soit trouvée. Ça évite les soucis si tes fichiers
+// sont en .jpeg, .JPG (majuscule) etc. au lieu de .jpg.
+const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG', 'webp'];
+
+function loadImageWithFallback(imgEl, baseName, placeholderEl){
+  let i = 0;
+  imgEl.onerror = null;
+  if(placeholderEl) placeholderEl.style.display = 'none';
+
+  function tryNext(){
+    if(i >= PHOTO_EXTENSIONS.length){
+      imgEl.style.display = 'none';
+      if(placeholderEl){
+        placeholderEl.style.display = 'flex';
+        placeholderEl.textContent = `📸 Photo manquante : ${baseName} (essayé .jpg, .jpeg, .png...)`;
+      }
+      return;
+    }
+    imgEl.src = `${baseName}.${PHOTO_EXTENSIONS[i]}`;
+    i++;
+  }
+  imgEl.style.display = 'block';
+  imgEl.onerror = tryNext;
+  tryNext();
+}
 
 /* =========================================================================
    LOGIQUE DU JEU — tu n'as normalement pas besoin de toucher à ce qui suit
@@ -675,18 +702,16 @@ function renderQuestion(){
 function selectChoice(idx){
   const q = QUESTIONS[currentIndex];
   const choice = q.choices[idx];
-  const isCorrect = idx === q.correctAnswer;
+  const isCorrect = Array.isArray(q.correctAnswer)
+    ? q.correctAnswer.includes(idx)
+    : idx === q.correctAnswer;
   if(isCorrect) score++;
 
   document.getElementById('score-text').textContent = `Score : ${score}`;
 
   const img = document.getElementById('overlay-img');
   const placeholder = document.getElementById('overlay-placeholder');
-  img.style.display = 'block';
-  img.src = choice.photo;
-  img.alt = choice.label;
-  placeholder.style.display = 'none';
-  placeholder.textContent = `📸 Photo manquante : ${choice.photo}`;
+  loadImageWithFallback(img, choice.photo, placeholder);
 
   document.getElementById('overlay-caption').textContent = choice.caption || '';
 
@@ -714,6 +739,11 @@ function finishQuiz(){
     document.getElementById('result-win').style.display = 'block';
     document.getElementById('final-score-num').textContent = score;
     document.getElementById('love-letter-text').textContent = LOVE_LETTER;
+    loadImageWithFallback(
+      document.getElementById('couple-photo-img'),
+      'photo_couple',
+      document.getElementById('couple-photo-placeholder')
+    );
     launchConfetti();
   } else {
     document.getElementById('result-lose').style.display = 'block';
