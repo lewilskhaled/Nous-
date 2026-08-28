@@ -414,7 +414,7 @@
             <!-- ===================================================== -->
             <!-- EMPLACEMENT PHOTO DE COUPLE : remplace le src ci-dessous -->
             <!-- ===================================================== -->
-            <img src="photo_couple.jpg" alt="Notre photo de couple"
+            <img src="photos/photo_couple.jpg" alt="Notre photo de couple"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="placeholder" style="display:none;">📸 Remplace "photo_couple.jpg" par votre photo de couple</div>
           </div>
@@ -474,10 +474,10 @@ const QUESTIONS = [
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui a dit \"Je t'aime\" en premier ?",
-    correctAnswer: -1, // <-- A DEFINIR : 0 = "Toi", 1 = "Moi"
+    correctAnswer: 1, // <-- A DEFINIR : 0 = "Toi", 1 = "Moi"
     choices: [
-      { label: "Toi", photo: "q1_a.jpg", caption: "Légende pour Toi" },
-      { label: "Moi", photo: "q1_b.jpg", caption: "Légende pour Moi" },
+      { label: "Toi", photo: "photos/q1_a.jpg", caption: "Légende pour Toi" },
+      { label: "Moi", photo: "photos/q1_b.jpg", caption: "Légende pour Moi" },
     ]
   },
   {
@@ -485,8 +485,8 @@ const QUESTIONS = [
     text: "Qui a fait le premier pas ?",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Toi", photo: "q2_a.jpg", caption: "Légende..." },
-      { label: "Moi", photo: "q2_b.jpg", caption: "Légende..." },
+      { label: "Toi", photo: "photos/q2_a.jpg", caption: "Légende..." },
+      { label: "Moi", photo: "photos/q2_b.jpg", caption: "Légende..." },
     ]
   },
   {
@@ -494,17 +494,17 @@ const QUESTIONS = [
     text: "Qui est le plus jaloux ?",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Toi", photo: "q3_a.jpg", caption: "Légende..." },
-      { label: "Moi", photo: "q3_b.jpg", caption: "Légende..." },
+      { label: "Toi", photo: "photos/q3_a.jpg", caption: "Légende..." },
+      { label: "Moi", photo: "photos/q3_b.jpg", caption: "Légende..." },
     ]
   },
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui boude le plus longtemps après une dispute ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 1, // MODIFIER ICI
     choices: [
-      { label: "Toi", photo: "q4_a.jpg", caption: "Légende..." },
-      { label: "Moi", photo: "q4_b.jpg", caption: "Légende..." },
+      { label: "Toi", photo: "photos/q4_a.jpg", caption: "Légende..." },
+      { label: "Moi", photo: "photos/q4_b.jpg", caption: "Légende..." },
     ]
   },
   {
@@ -512,8 +512,8 @@ const QUESTIONS = [
     text: "Qui est le plus romantique ?",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Toi", photo: "q5_a.jpg", caption: "Légende..." },
-      { label: "Moi", photo: "q5_b.jpg", caption: "Légende..." },
+      { label: "Toi", photo: "photos/q5_a.jpg", caption: "Légende..." },
+      { label: "Moi", photo: "photos/q5_b.jpg", caption: "Légende..." },
     ]
   },
   {
@@ -521,8 +521,8 @@ const QUESTIONS = [
     text: "Qui est le plus pervers ?",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Toi", photo: "q6_a.jpg", caption: "Légende..." },
-      { label: "Moi", photo: "q6_b.jpg", caption: "Légende..." },
+      { label: "Toi", photo: "photos/q6_a.jpg", caption: "Légende..." },
+      { label: "Moi", photo: "photos/q6_b.jpg", caption: "Légende..." },
     ]
   },
 
@@ -530,12 +530,12 @@ const QUESTIONS = [
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Quel est mon plus grand rêve ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 3, // MODIFIER ICI
     choices: [
-      { label: "Devenir cuisinier", photo: "q7_a.jpg", caption: "..." },
-      { label: "Devenir chanteur", photo: "q7_b.jpg", caption: "..." },
-      { label: "Être propriétaire d'un hôtel", photo: "q7_c.jpg", caption: "..." },
-      { label: "Associer hôtel et musique", photo: "q7_d.jpg", caption: "..." },
+      { label: "Devenir cuisinier", photo: "photos/q7_a.jpg", caption: "..." },
+      { label: "Devenir chanteur", photo: "photos/q7_b.jpg", caption: "..." },
+      { label: "Être propriétaire d'un hôtel", photo: "photos/q7_c.jpg", caption: "..." },
+      { label: "Associer hôtel et musique", photo: "photos/q7_d.jpg", caption: "..." },
     ]
   },
   {
@@ -543,10 +543,10 @@ const QUESTIONS = [
     text: "Quelle est ma plus grande phobie ?",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "L'eau", photo: "q8_a.jpg", caption: "..." },
-      { label: "Le feu", photo: "q8_b.jpg", caption: "..." },
-      { label: "Peur des petits espaces", photo: "q8_c.jpg", caption: "..." },
-      { label: "Peur des grands espaces", photo: "q8_d.jpg", caption: "..." },
+      { label: "L'eau", photo: "photos/q8_a.jpg", caption: "..." },
+      { label: "Le feu", photo: "photos/q8_b.jpg", caption: "..." },
+      { label: "Peur des petits espaces", photo: "photos/q8_c.jpg", caption: "..." },
+      { label: "Peur des grands espaces", photo: "photos/q8_d.jpg", caption: "..." },
     ]
   },
   {
@@ -554,8 +554,8 @@ const QUESTIONS = [
     text: "Je suis plutôt...",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Introverti", photo: "q9_a.jpg", caption: "..." },
-      { label: "Extraverti", photo: "q9_b.jpg", caption: "..." },
+      { label: "Introverti", photo: "photos/q9_a.jpg", caption: "..." },
+      { label: "Extraverti", photo: "photos/q9_b.jpg", caption: "..." },
     ]
   },
   {
@@ -563,23 +563,23 @@ const QUESTIONS = [
     text: "Qu'est-ce que j'aime le plus chez toi ?",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Ton cul", photo: "q10_a.jpg", caption: "..." },
-      { label: "Ta fidélité", photo: "q10_b.jpg", caption: "..." },
-      { label: "Ta lenteur", photo: "q10_c.jpg", caption: "..." },
-      { label: "Ta sincérité", photo: "q10_d.jpg", caption: "..." },
-      { label: "Quand tu me dis non", photo: "q10_e.jpg", caption: "..." },
+      { label: "Ton cul", photo: "photos/q10_a.jpg", caption: "..." },
+      { label: "Ta fidélité", photo: "photos/q10_b.jpg", caption: "..." },
+      { label: "Ta lenteur", photo: "photos/q10_c.jpg", caption: "..." },
+      { label: "Ta sincérité", photo: "photos/q10_d.jpg", caption: "..." },
+      { label: "Quand tu me dis non", photo: "photos/q10_e.jpg", caption: "..." },
     ]
   },
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Quelle est la partie de ton corps que j'aime le plus ?",
-    correctAnswer: 0, // MODIFIER ICI
+    correctAnswer: 4, // MODIFIER ICI
     choices: [
-      { label: "Ton cœur", photo: "q11_a.jpg", caption: "..." },
-      { label: "Tes pieds", photo: "q11_b.jpg", caption: "..." },
-      { label: "Ton ventre", photo: "q11_c.jpg", caption: "..." },
-      { label: "Ton dos", photo: "q11_d.jpg", caption: "..." },
-      { label: "Ton gros cul tout mou", photo: "q11_e.jpg", caption: "..." },
+      { label: "Ton cœur", photo: "photos/q11_a.jpg", caption: "..." },
+      { label: "Tes pieds", photo: "photos/q11_b.jpg", caption: "..." },
+      { label: "Ton ventre", photo: "photos/q11_c.jpg", caption: "..." },
+      { label: "Ton dos", photo: "photos/q11_d.jpg", caption: "..." },
+      { label: "Ton gros cul tout mou", photo: "photos/q11_e.jpg", caption: "..." },
     ]
   },
   {
@@ -587,10 +587,10 @@ const QUESTIONS = [
     text: "Qu'est-ce que je ferai quand tu ne seras pas à la maison ?",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Sentir tous tes caleçons sales", photo: "q12_a.jpg", caption: "..." },
-      { label: "Attendre gentiment que tu reviennes", photo: "q12_b.jpg", caption: "..." },
-      { label: "Prendre soin de la maison", photo: "q12_c.jpg", caption: "..." },
-      { label: "Regarder la télé", photo: "q12_d.jpg", caption: "..." },
+      { label: "Sentir tous tes caleçons sales", photo: "photos/q12_a.jpg", caption: "..." },
+      { label: "Attendre gentiment que tu reviennes", photo: "photos/q12_b.jpg", caption: "..." },
+      { label: "Prendre soin de la maison", photo: "photos/q12_c.jpg", caption: "..." },
+      { label: "Regarder la télé", photo: "photos/q12_d.jpg", caption: "..." },
     ]
   },
   {
@@ -598,10 +598,10 @@ const QUESTIONS = [
     text: "J'ai toujours rêvé d'avoir...",
     correctAnswer: 0, // MODIFIER ICI
     choices: [
-      { label: "Une fille", photo: "q13_a.jpg", caption: "..." },
-      { label: "Un garçon", photo: "q13_b.jpg", caption: "..." },
-      { label: "Un père", photo: "q13_c.jpg", caption: "..." },
-      { label: "Une console PlayStation", photo: "q13_d.jpg", caption: "..." },
+      { label: "Une fille", photo: "photos/q13_a.jpg", caption: "..." },
+      { label: "Un garçon", photo: "photos/q13_b.jpg", caption: "..." },
+      { label: "Un père", photo: "photos/q13_c.jpg", caption: "..." },
+      { label: "Une console PlayStation", photo: "photos/q13_d.jpg", caption: "..." },
     ]
   },
 ];
