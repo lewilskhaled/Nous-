@@ -45,46 +45,22 @@
     padding:24px;
   }
 
-  /* Petales flottants d'ambiance */
   .petal{
-    position:fixed;
-    top:-40px;
-    font-size:22px;
-    opacity:0.55;
-    pointer-events:none;
-    animation: fall linear infinite;
-    z-index:0;
-    filter: saturate(1.1);
+    position:fixed; top:-40px; font-size:22px; opacity:0.55; pointer-events:none;
+    animation: fall linear infinite; z-index:0; filter: saturate(1.1);
   }
-  @keyframes fall{
-    to{ transform: translateY(110vh) rotate(360deg); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .petal{ animation: none; display:none; }
-  }
+  @keyframes fall{ to{ transform: translateY(110vh) rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .petal{ animation: none; display:none; } }
 
-  #app{
-    position:relative;
-    z-index:1;
-    width:100%;
-    max-width:640px;
-  }
+  #app{ position:relative; z-index:1; width:100%; max-width:640px; }
 
   .screen{ display:none; }
   .screen.active{ display:block; animation: appear 0.5s ease; }
-  @keyframes appear{
-    from{ opacity:0; transform: translateY(14px); }
-    to{ opacity:1; transform: translateY(0); }
-  }
+  @keyframes appear{ from{ opacity:0; transform: translateY(14px); } to{ opacity:1; transform: translateY(0); } }
 
-  .card{
-    background:var(--cream);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 36px 30px;
-  }
+  .card{ background:var(--cream); border-radius: var(--radius); box-shadow: var(--shadow); padding: 36px 30px; }
 
-  h1,h2,h3{ font-family:'Montserrat', serif; font-weight:700; color:var(--gold); }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:700; color:var(--gold); }
 
   /* ---------- ECRAN D'ACCUEIL ---------- */
   #screen-start .card{ text-align:center; }
@@ -98,23 +74,29 @@
   @keyframes pulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.14);} }
 
   .btn{
-    font-family:'Quicksand'; font-weight:700; font-size:16px;
-    border:none; cursor:pointer;
-    padding:15px 34px;
-    border-radius: 999px;
+    font-family:'Quicksand'; font-weight:700; font-size:16px; border:none; cursor:pointer;
+    padding:15px 34px; border-radius: 999px;
     background: linear-gradient(135deg, var(--rouge), var(--rouge-deep));
-    color:#fff;
-    box-shadow: 0 10px 24px rgba(124,45,138,0.38);
+    color:#fff; box-shadow: 0 10px 24px rgba(124,45,138,0.38);
     transition: transform .18s ease, box-shadow .18s ease;
   }
   .btn:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(124,45,138,0.46); }
   .btn:active{ transform: translateY(0); }
   .btn:focus-visible{ outline: 3px solid var(--gold); outline-offset:3px; }
-  .btn.ghost{
-    background:transparent; color:var(--rouge);
-    border:2px solid var(--petal); box-shadow:none;
-  }
+  .btn.ghost{ background:transparent; color:var(--rouge); border:2px solid var(--petal); box-shadow:none; }
   .btn.ghost:hover{ background: rgba(182,114,209,0.3); }
+  .btn.small{ padding:10px 20px; font-size:14px; }
+  .btn.full{ width:100%; }
+
+  /* ---------- LECTEUR MUSIQUE (flottant) ---------- */
+  .music-player{ position:fixed; top:16px; right:16px; z-index:70; }
+  .music-btn{
+    width:48px; height:48px; border-radius:50%;
+    background:var(--cream); border:2px solid var(--petal);
+    box-shadow: var(--shadow); font-size:20px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; color:var(--ink);
+  }
+  .music-btn.playing{ animation: pulse 1.2s ease-in-out infinite; border-color:var(--gold); }
 
   /* ---------- BARRE DE PROGRESSION ---------- */
   .progress-wrap{ margin-bottom:22px; }
@@ -122,22 +104,14 @@
     display:flex; justify-content:space-between; align-items:baseline;
     font-size:13px; color:var(--ink-soft); margin-bottom:8px; font-weight:600;
   }
-  .progress-track{
-    position:relative;
-    height:10px; border-radius:999px;
-    background: rgba(238,166,181,0.35);
-    overflow:visible;
-  }
+  .progress-track{ position:relative; height:10px; border-radius:999px; background: rgba(238,166,181,0.35); overflow:visible; }
   .progress-fill{
     height:100%; border-radius:999px;
     background: linear-gradient(90deg, var(--petal-deep), var(--rouge));
-    transition: width .45s ease;
-    position:relative;
+    transition: width .45s ease; position:relative;
   }
   .progress-fill::after{
-    content:"💗";
-    position:absolute; right:-11px; top:50%; transform:translateY(-50%);
-    font-size:18px;
+    content:"💗"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); font-size:18px;
   }
 
   .part-label{
@@ -145,77 +119,51 @@
     color:var(--gold); margin-bottom:6px;
   }
 
-  #question-text{
-    font-size:clamp(20px,4.6vw,25px);
-    line-height:1.3;
-    margin-bottom:22px;
-  }
+  #question-text{ font-size:clamp(20px,4.6vw,25px); line-height:1.3; margin-bottom:22px; }
 
-  #choices{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:12px;
-  }
+  #choices{ display:grid; grid-template-columns: 1fr; gap:12px; }
+  .choice-wrap{ display:flex; flex-direction:column; gap:4px; }
   .choice-btn{
-    text-align:left;
-    font-family:'Montserrat'; font-weight:600; font-size:16px;
-    color:var(--ink);
-    background: var(--surface);
-    border:2px solid transparent;
-    border-radius:16px;
-    padding:16px 18px;
-    cursor:pointer;
-    transition: all .16s ease;
+    text-align:left; font-family:'Quicksand'; font-weight:600; font-size:16px;
+    color:var(--ink); background: var(--surface); border:2px solid transparent;
+    border-radius:16px; padding:16px 18px; cursor:pointer; transition: all .16s ease;
+    width:100%;
   }
-  .choice-btn:hover{
-    border-color: var(--rouge);
-    background:#3a1d44;
-    transform: translateX(4px);
-  }
+  .choice-btn:hover{ border-color: var(--rouge); background:#3a1d44; transform: translateX(4px); }
   .choice-btn:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; }
+  .choice-btn.trap{ border-color: rgba(227,181,99,0.5); }
   .choice-letter{
     display:inline-flex; align-items:center; justify-content:center;
-    width:26px; height:26px; border-radius:50%;
-    background: var(--petal); color:#fff;
+    width:26px; height:26px; border-radius:50%; background: var(--petal); color:#fff;
     font-size:13px; font-weight:700; margin-right:10px;
   }
+  .trap-hint{ font-size:11px; color:var(--gold); font-style:italic; padding-left:4px; }
+
+  .quiz-topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .quiz-topbar .btn.ghost.small{ padding:6px 14px; font-size:12px; }
 
   /* ---------- OVERLAY DE REPONSE ---------- */
   #answer-overlay{
-    position:fixed; inset:0; z-index:50;
-    background: rgba(74,42,53,0.55);
-    display:none;
-    align-items:center; justify-content:center;
-    padding:20px;
+    position:fixed; inset:0; z-index:50; background: rgba(74,42,53,0.55);
+    display:none; align-items:center; justify-content:center; padding:20px;
   }
   #answer-overlay.active{ display:flex; }
   .overlay-card{
-    background:var(--cream);
-    border-radius: var(--radius);
-    max-width:420px; width:100%;
-    box-shadow: var(--shadow-lg);
-    overflow:hidden;
-    animation: pop .35s cubic-bezier(.2,.9,.3,1.3);
+    background:var(--cream); border-radius: var(--radius); max-width:420px; width:100%;
+    box-shadow: var(--shadow-lg); overflow:hidden; animation: pop .35s cubic-bezier(.2,.9,.3,1.3);
   }
   @keyframes pop{ from{ transform:scale(.85); opacity:0;} to{ transform:scale(1); opacity:1;} }
 
   .overlay-photo-wrap{
-    width:100%; aspect-ratio: 4/3;
-    background: linear-gradient(135deg, var(--petal), var(--petal-deep));
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
-    position:relative;
+    width:100%; aspect-ratio: 4/3; background: linear-gradient(135deg, var(--petal), var(--petal-deep));
+    display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative;
   }
   .overlay-photo-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .overlay-photo-wrap .placeholder{
-    font-size:13px; color:var(--ink); font-weight:700; text-align:center; padding:10px;
-  }
+  .overlay-photo-wrap .placeholder{ font-size:13px; color:var(--ink); font-weight:700; text-align:center; padding:10px; }
 
   .verdict-badge{
-    position:absolute; top:12px; left:12px;
-    padding:6px 14px; border-radius:999px;
-    font-size:13px; font-weight:700; font-family:'Quicksand';
-    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    position:absolute; top:12px; left:12px; padding:6px 14px; border-radius:999px;
+    font-size:13px; font-weight:700; font-family:'Quicksand'; box-shadow:0 4px 10px rgba(0,0,0,0.15);
   }
   .verdict-badge.correct{ background:#eafaf0; color:#2e7d4f; }
   .verdict-badge.wrong{ background:#fdecec; color:#c23b3b; }
@@ -224,124 +172,101 @@
   .overlay-caption{ font-size:15.5px; line-height:1.5; color:var(--ink); margin-bottom:18px; font-style: italic; }
   .overlay-body .btn{ width:100%; }
 
-  /* ---------- ECRAN RESULTAT ---------- */
+  /* ---------- ECRAN NIVEAUX ---------- */
+  #screen-levels .card{ text-align:center; }
+  .level-list{ display:flex; flex-direction:column; gap:14px; margin-top:22px; }
+  .level-card{
+    text-align:left; border-radius:18px; padding:18px 20px; border:2px solid transparent;
+    cursor:pointer; background:var(--surface); transition: all .16s ease;
+  }
+  .level-card.locked{ opacity:.45; cursor:not-allowed; }
+  .level-card.unlocked:hover{ border-color:var(--rouge); transform:translateX(4px); }
+  .level-card.won{ border-color: var(--gold); }
+  .level-card h3{ font-size:18px; margin-bottom:4px; color:var(--ink); font-family:'Fraunces'; }
+  .level-card p{ font-size:13px; color:var(--ink-soft); }
+  .level-status{ font-size:12px; font-weight:700; margin-top:8px; color:var(--gold); }
+  .level-status.locked-text{ color:var(--ink-soft); }
+
+  /* ---------- ECRAN RESULTAT (contenu dynamique) ---------- */
   #screen-result .card{ text-align:center; }
   .score-display{
-    font-family:'Fraunces'; font-weight:700;
-    font-size:clamp(44px,10vw,60px);
-    color:var(--gold);
-    margin: 6px 0 4px;
+    font-family:'Fraunces'; font-weight:700; font-size:clamp(44px,10vw,60px);
+    color:var(--gold); margin: 6px 0 4px;
   }
   .score-display span{ font-size: .45em; color:var(--ink-soft); font-family:'Quicksand'; font-weight:600; }
 
   /* ---------- ENVELOPPE ---------- */
-  #envelope-zone{ margin-top:26px; }
-  .envelope-hint{ font-size:14px; color:var(--ink-soft); margin-bottom:16px; }
-
-  .envelope{
-    width:230px; height:150px;
-    margin:0 auto;
-    position:relative;
-    cursor:pointer;
-    perspective: 900px;
-  }
-  .envelope-body{
-    position:absolute; inset:0;
-    background: linear-gradient(160deg, #fff, #fdeef1);
-    border-radius:10px;
-    box-shadow: var(--shadow-lg);
-    overflow:hidden;
-  }
+  .envelope-hint{ font-size:14px; color:var(--ink-soft); margin:16px 0; }
+  .envelope{ width:230px; height:150px; margin:0 auto; position:relative; cursor:pointer; perspective: 900px; }
+  .envelope-body{ position:absolute; inset:0; background: linear-gradient(160deg, #fff, #fdeef1); border-radius:10px; box-shadow: var(--shadow-lg); overflow:hidden; }
   .envelope-body::before, .envelope-body::after{
-    content:"";
-    position:absolute; top:0; width:50%; height:100%;
-    border-top: 75px solid var(--petal-deep);
+    content:""; position:absolute; top:0; width:50%; height:100%; border-top: 75px solid var(--petal-deep);
   }
   .envelope-body::before{ left:0; border-left:115px solid transparent; }
   .envelope-body::after{ right:0; border-right:115px solid transparent; }
-
   .envelope-flap{
     position:absolute; top:0; left:0; width:100%; height:0;
-    border-left:115px solid transparent;
-    border-right:115px solid transparent;
-    border-top:78px solid var(--rouge);
-    transform-origin: top;
-    transition: transform .7s cubic-bezier(.4,0,.2,1);
-    z-index:5;
+    border-left:115px solid transparent; border-right:115px solid transparent; border-top:78px solid var(--rouge);
+    transform-origin: top; transition: transform .7s cubic-bezier(.4,0,.2,1); z-index:5;
   }
   .envelope.open .envelope-flap{ transform: rotateX(180deg); }
-
   .wax-seal{
-    position:absolute; top:38px; left:50%; transform:translateX(-50%);
-    width:44px; height:44px; border-radius:50%;
+    position:absolute; top:38px; left:50%; transform:translateX(-50%); width:44px; height:44px; border-radius:50%;
     background: radial-gradient(circle at 35% 30%, #e7bd6f, var(--gold) 60%, #b8842f);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-    display:flex; align-items:center; justify-content:center;
-    font-size:18px; color:#fff8ec; z-index:6;
-    transition: opacity .3s ease .1s, transform .3s ease .1s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25); display:flex; align-items:center; justify-content:center;
+    font-size:18px; color:#fff8ec; z-index:6; transition: opacity .3s ease .1s, transform .3s ease .1s;
   }
   .envelope.open .wax-seal{ opacity:0; transform: translateX(-50%) scale(0.4); }
-
   .envelope-letter{
     position:absolute; left:50%; bottom:8px; transform:translateX(-50%) translateY(0);
-    width:82%; height:6px;
-    background:#fffdfb;
-    border-radius:6px 6px 0 0;
-    box-shadow: 0 -2px 6px rgba(0,0,0,0.08);
-    transition: transform .6s ease .25s, height .6s ease .25s;
-    z-index:3;
+    width:82%; height:6px; background:#fffdfb; border-radius:6px 6px 0 0;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.08); transition: transform .6s ease .25s, height .6s ease .25s; z-index:3;
   }
-  .envelope.open .envelope-letter{
-    transform:translateX(-50%) translateY(-190px);
-    height:220px;
-  }
-
+  .envelope.open .envelope-letter{ transform:translateX(-50%) translateY(-190px); height:220px; }
   .envelope:hover .envelope-body{ box-shadow: var(--shadow-lg), 0 0 0 4px rgba(124,45,138,0.18); }
 
-  /* ---------- LETTRE OUVERTE ---------- */
+  .envelope-buttons{ display:flex; flex-direction:column; gap:12px; margin-top:22px; align-items:center; }
+
   #letter-content{
-    display:none;
-    margin-top:34px;
-    text-align:left;
-    background:#fffdf9;
-    border-radius:18px;
-    padding:28px 26px;
-    box-shadow: var(--shadow);
-    border:1px solid rgba(217,166,83,0.35);
-    position:relative;
+    display:none; margin-top:34px; text-align:left; background:#fffdf9; border-radius:18px;
+    padding:28px 26px; box-shadow: var(--shadow); border:1px solid rgba(217,166,83,0.35); position:relative;
   }
   #letter-content.show{ display:block; animation: appear .6s ease; }
-  #letter-content::before{
-    content:"💌";
-    position:absolute; top:-18px; left:24px;
-    font-size:26px;
-  }
+  #letter-content::before{ content:"💌"; position:absolute; top:-18px; left:24px; font-size:26px; }
   .couple-photo-wrap{
-    width:100%; max-height:280px; aspect-ratio:16/10;
-    border-radius:14px; overflow:hidden;
-    background:linear-gradient(135deg, var(--petal), var(--petal-deep));
-    margin-bottom:20px;
+    width:100%; max-height:280px; aspect-ratio:16/10; border-radius:14px; overflow:hidden;
+    background:linear-gradient(135deg, var(--petal), var(--petal-deep)); margin-bottom:20px;
     display:flex; align-items:center; justify-content:center;
   }
   .couple-photo-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
   .couple-photo-wrap .placeholder{ color:var(--ink); font-weight:700; font-size:14px; text-align:center; padding:12px; }
+  #love-letter-text{ font-family:'Caveat', cursive; font-size:26px; line-height:1.55; color:#5a3340; white-space:pre-line; }
 
-  #love-letter-text{
-    font-family:'Caveat', cursive;
-    font-size:26px;
-    line-height:1.55;
-    color:#5a3340;
-    white-space:pre-line;
+  /* ---------- CADEAUX ---------- */
+  .gift-grid{ display:grid; grid-template-columns: 1fr; gap:14px; margin-top:20px; }
+  @media (min-width:480px){ .gift-grid.two{ grid-template-columns: 1fr 1fr; } }
+  .gift-card{
+    background:#fffdf9; border:1px solid rgba(217,166,83,.4); border-radius:16px; padding:20px;
+    text-align:center; opacity:0; animation: giftReveal .5s ease forwards;
   }
+  .gift-card .gift-icon{ font-size:32px; margin-bottom:8px; }
+  .gift-card h4{ font-family:'Fraunces'; color:var(--gold); margin-bottom:6px; font-size:16px; }
+  .gift-card p{ font-size:13.5px; color:#7c5c86; line-height:1.45; }
+  @keyframes giftReveal{ from{opacity:0; transform:translateY(10px) scale(.95);} to{opacity:1; transform:translateY(0) scale(1);} }
 
-  /* ---------- ECRAN ECHEC (retente) ---------- */
+  /* ---------- ECRAN CHOIX (score non parfait) ---------- */
   .retry-emoji{ font-size:46px; margin-bottom:10px; }
-  #screen-result .retry-msg{ color:var(--ink-soft); font-size:16px; margin:14px 0 24px; line-height:1.55; }
+  .retry-msg{ color:var(--ink-soft); font-size:16px; margin:14px 0 8px; line-height:1.55; }
+  .choice-modal-buttons{ display:flex; flex-direction:column; gap:10px; margin-top:20px; }
 
   /* ---------- CONFETTIS ---------- */
-  #confetti-canvas{
-    position:fixed; inset:0; pointer-events:none; z-index:40;
-  }
+  #confetti-canvas{ position:fixed; inset:0; pointer-events:none; z-index:40; }
+
+  /* ---------- FLASH VERT/ROUGE (feedback réponse) ---------- */
+  #flash-layer{ position:fixed; inset:0; z-index:45; pointer-events:none; opacity:0; }
+  #flash-layer.flash-correct{ background:#22c55e; animation: flashPulse .5s ease; }
+  #flash-layer.flash-wrong{ background:#ef4444; animation: flashPulse .5s ease; }
+  @keyframes flashPulse{ 0%{opacity:0;} 18%{opacity:.4;} 100%{opacity:0;} }
 
   @media (max-width:480px){
     .card{ padding:26px 18px; }
@@ -356,6 +281,23 @@
 <body>
 
 <canvas id="confetti-canvas"></canvas>
+<div id="flash-layer"></div>
+
+<!-- ================= LECTEUR DE MUSIQUE DE FOND ================= -->
+<!-- ===================================================== -->
+<!-- Une chanson par niveau. Dépose ces 4 fichiers audio (que tu te -->
+<!-- procures toi-même légalement) au même endroit que ce fichier HTML : -->
+<!--   casual.mp3           -> Niveau Facile (Doja Cat - Casual) -->
+<!--   earned-it.mp3        -> Niveau Intermédiaire (The Weeknd - Earned It) -->
+<!--   die-for-you.mp3      -> Niveau Difficile (The Weeknd - Die For You) -->
+<!--   call-out-my-name.mp3 -> Niveau Très difficile (The Weeknd - Call Out My Name) -->
+<!-- Le volume monte tout seul à la fin d'un niveau, à l'ouverture de la -->
+<!-- lettre, puis à la découverte du/des cadeau(x). -->
+<!-- ===================================================== -->
+<div class="music-player">
+  <audio id="bg-music" src="casual.mp3" loop preload="none"></audio>
+  <button class="music-btn" id="music-toggle" title="Musique">🎵</button>
+</div>
 
 <div id="app">
 
@@ -365,14 +307,27 @@
       <span class="heart-loop">💞</span>
       <div class="eyebrow">Un petit jeu rien que pour toi</div>
       <h1>Notre Quiz d'Amour</h1>
-      <p class="sub">13 questions pour savoir si tu me connais vraiment... et débloquer une petite surprise à la fin. 💌</p>
+      <p class="sub">4 niveaux à débloquer, plein de souvenirs... et des surprises à la clé. 💌</p>
       <button class="btn" id="btn-start">Commencer 💕</button>
+    </div>
+  </section>
+
+  <!-- ================= ECRAN CHOIX DU NIVEAU ================= -->
+  <section id="screen-levels" class="screen">
+    <div class="card">
+      <span class="heart-loop">🗺️</span>
+      <h2>Choisis ton niveau</h2>
+      <p class="sub" style="margin-bottom:0;">Termine un niveau avec un score parfait pour débloquer le suivant et ton cadeau.</p>
+      <div class="level-list" id="level-list"></div>
     </div>
   </section>
 
   <!-- ================= ECRAN QUIZ ================= -->
   <section id="screen-quiz" class="screen">
     <div class="card">
+      <div class="quiz-topbar">
+        <button class="btn ghost small" id="btn-back-to-levels">← Niveaux</button>
+      </div>
       <div class="progress-wrap">
         <div class="progress-label">
           <span id="progress-text">Question 1 sur 13</span>
@@ -383,59 +338,16 @@
         </div>
       </div>
 
-      <div class="part-label" id="part-label">Partie 1 · Qui de nous deux ?</div>
+      <div class="part-label" id="part-label">Partie 1</div>
       <h2 id="question-text">Chargement...</h2>
 
       <div id="choices"></div>
     </div>
   </section>
 
-  <!-- ================= ECRAN RESULTAT ================= -->
+  <!-- ================= ECRAN RESULTAT (contenu généré dynamiquement) ================= -->
   <section id="screen-result" class="screen">
-    <div class="card">
-
-      <div id="result-win" style="display:none;">
-        <div class="heart-loop">🎉</div>
-        <h2>Bravo, tu me connais par cœur !</h2>
-        <div class="score-display"><span id="final-score-num">13</span><span>/13</span></div>
-
-        <div id="envelope-zone">
-          <p class="envelope-hint">Une lettre t'attend... clique sur l'enveloppe 👇</p>
-          <div class="envelope" id="envelope">
-            <div class="envelope-letter"></div>
-            <div class="envelope-body"></div>
-            <div class="wax-seal">♥</div>
-            <div class="envelope-flap"></div>
-          </div>
-        </div>
-
-        <div id="letter-content">
-          <div class="couple-photo-wrap">
-            <!-- ===================================================== -->
-            <!-- EMPLACEMENT PHOTO DE COUPLE : remplace le src ci-dessous -->
-            <!-- ===================================================== -->
-            <img id="couple-photo-img" src="" alt="Notre photo de couple" style="display:none;">
-            <div class="placeholder" id="couple-photo-placeholder" style="display:none;">📸 Photo manquante : photo_couple</div>
-          </div>
-
-          <!-- ===================================================== -->
-          <!-- EMPLACEMENT LETTRE D'AMOUR : modifie le texte ci-dessous -->
-          <!-- Astuce : utilise \n dans la chaîne JS (LOVE_LETTER) pour les retours à la ligne -->
-          <!-- ===================================================== -->
-          <p id="love-letter-text"></p>
-        </div>
-      </div>
-
-      <div id="result-lose" style="display:none;">
-        <div class="retry-emoji">🙈</div>
-        <h2>Pas mal... mais pas encore assez !</h2>
-        <div class="score-display"><span id="final-score-num-lose">0</span><span>/13</span></div>
-        <p class="retry-msg">Il te faut au moins <strong>12/13</strong> pour débloquer ma lettre d'amour...
-          On dirait que je vais devoir te faire réviser un peu plus 😏<br>Retente ta chance !</p>
-        <button class="btn" id="btn-retry">Réessayer 🔁</button>
-      </div>
-
-    </div>
+    <div class="card" id="result-card"></div>
   </section>
 
 </div>
@@ -450,27 +362,33 @@
     </div>
     <div class="overlay-body">
       <p class="overlay-caption" id="overlay-caption"></p>
-      <button class="btn" id="btn-next">Suivant →</button>
+      <button class="btn full" id="btn-next">Suivant →</button>
     </div>
   </div>
 </div>
 
 <script>
 /* =========================================================================
-   NOTRE QUIZ D'AMOUR — script principal
+   NOTRE QUIZ D'AMOUR — script principal (v2, 4 niveaux)
    =========================================================================
-   Toutes les données du quiz sont dans le tableau QUESTIONS ci-dessous.
-   Pour chaque question tu peux modifier :
-     - photo      : le nom du fichier image (place l'image dans le dossier
-                    "photos", au même niveau que ce fichier HTML)
-     - caption    : la légende affichée sous la photo
-     - correctAnswer : l'INDEX de la bonne réponse (0 = choix A, 1 = choix B,
-                    etc). Pour PLUSIEURS bonnes réponses, utilise un tableau
-                    entre crochets, ex: correctAnswer: [0, 1, 3]
+   STRUCTURE GENERALE :
+   - Chaque niveau (LEVELS ci-dessous) a ses propres questions et son propre
+     cadeau final.
+   - Pour CHAQUE QUESTION tu peux modifier :
+       - photo          : nom de fichier SANS extension (ex: "q1_a"). Le jeu
+                          essaie tout seul .jpg / .jpeg / .JPG / .png etc.
+       - caption        : légende affichée sous la photo
+       - correctAnswer  : index de la bonne réponse (0=A, 1=B...) ou un
+                          tableau [0,1,3] pour plusieurs bonnes réponses
+       - trap           : OPTIONNEL. Rend un choix "fuyant" (voir plus bas)
+   - Pour CHAQUE NIVEAU tu peux modifier son texte de lettre (LOVE_LETTER_...)
+     et la description de ses cadeaux (voir reward.gifts).
    ========================================================================= */
 
-const QUESTIONS = [
-  // ---------------- PARTIE 1 : QUI DE NOUS DEUX ? ----------------
+// -------------------------------------------------------------------------
+// NIVEAU 1 : FACILE (13 questions)
+// -------------------------------------------------------------------------
+const QUESTIONS_FACILE = [
   {
     part: "Partie 1 · Qui de nous deux ?",
     text: "Qui a dit \"Je t'aime\" en premier ?",
@@ -525,8 +443,6 @@ const QUESTIONS = [
       { label: "Moi", photo: "q6_b", caption: "Menteuse" },
     ]
   },
-
-  // ---------------- PARTIE 2 : EST-CE QUE TU ME CONNAIS BIEN ? ----------------
   {
     part: "Partie 2 · Voyons si tu me connais bien...",
     text: "Quel est mon plus grand rêve ?",
@@ -606,83 +522,262 @@ const QUESTIONS = [
   },
 ];
 
+// -------------------------------------------------------------------------
+// NIVEAU 2 : INTERMEDIAIRE (15 questions) — A REMPLIR
+// La 1ère question montre un exemple du "bouton fuyant" (trap). Regarde le
+// champ `trap: { choiceIndex: 0 }` : ça rend le choix A impossible à
+// cliquer, elle est donc "forcée" de cliquer sur B. Retire cette ligne
+// pour désactiver l'effet sur une question, ou ajoute-la à une autre.
+// -------------------------------------------------------------------------
+const QUESTIONS_INTERMEDIAIRE = Array.from({ length: 15 }, function(_, i){
+  const n = i + 1;
+  const base = {
+    part: "Niveau Intermédiaire",
+    text: "Question " + n + " du niveau Intermédiaire (à remplir)",
+    correctAnswer: 1, // MODIFIER ICI
+    choices: [
+      { label: "Toi", photo: "im" + n + "_a", caption: "..." },
+      { label: "Moi", photo: "im" + n + "_b", caption: "..." },
+    ]
+  };
+  if (n === 1) {
+    base.text = "Qui est le plus intelligent des deux ? 😏";
+    base.trap = { choiceIndex: 0 }; // exemple du bouton fuyant sur le choix "Toi"
+  }
+  return base;
+});
+
+// -------------------------------------------------------------------------
+// NIVEAU 3 : DIFFICILE (15 questions) — A REMPLIR
+// -------------------------------------------------------------------------
+const QUESTIONS_DIFFICILE = Array.from({ length: 15 }, function(_, i){
+  const n = i + 1;
+  return {
+    part: "Niveau Difficile",
+    text: "Question " + n + " du niveau Difficile (à remplir)",
+    correctAnswer: 1, // MODIFIER ICI
+    choices: [
+      { label: "Toi", photo: "df" + n + "_a", caption: "..." },
+      { label: "Moi", photo: "df" + n + "_b", caption: "..." },
+    ]
+  };
+});
+
+// -------------------------------------------------------------------------
+// NIVEAU 4 : TRES DIFFICILE (15 questions) — A REMPLIR
+// -------------------------------------------------------------------------
+const QUESTIONS_TRESDIFFICILE = Array.from({ length: 15 }, function(_, i){
+  const n = i + 1;
+  return {
+    part: "Niveau Très Difficile",
+    text: "Question " + n + " du niveau Très Difficile (à remplir)",
+    correctAnswer: 1, // MODIFIER ICI
+    choices: [
+      { label: "Toi", photo: "td" + n + "_a", caption: "..." },
+      { label: "Moi", photo: "td" + n + "_b", caption: "..." },
+    ]
+  };
+});
+
 // ===================================================== //
-// EMPLACEMENT LETTRE D'AMOUR — écris ton texte ici.
-// Utilise \n dans la chaîne pour aller à la ligne.
+// LETTRES D'AMOUR — un texte par niveau. Utilise \n pour
+// aller à la ligne.
 // ===================================================== //
-const LOVE_LETTER =
-`Ma puce,
+const LOVE_LETTER_FACILE =
+`Mon amour,
 
 Si tu lis ces mots, c'est que tu me connais par cœur (ou presque !).
 
-[Ma puce j'veux que tu saches que j'suis désolé pour toutes les fois ou t'as eu mal par ma faute . Sache que j'fais tout pour être un meilleur homme pour toi car tu mérite que du bonheur et j'suis prêt à t'en donner autant que possible . Ma puce je t'aime énormément! et jdonnerai ma vie pour toi, jferai tout mon possible pour que tu sois mienne, même si tu l'es déja en vrai. Mon alloco, promets moi que tu tiendra avec moi tu restera malgré tout, jveux vraiment pouvoir compter sur toi jveux voir ta grosse tête sur le lit conjuguale chaques matins donc resteeeeeeeeeeeeee avec moiiiiiiiiiiiii, t'es à moi et à personne d'autre ]
+[Écris ici ta lettre personnalisée...]
 
 Je t'aime.`;
 
-const SCORE_TO_WIN = 12; // score minimum sur 13 pour débloquer la lettre
+const LOVE_LETTER_INTERMEDIAIRE =
+`Mon amour,
 
-// Extensions testées automatiquement pour chaque photo, dans cet ordre,
-// jusqu'à ce qu'une image soit trouvée. Ça évite les soucis si tes fichiers
-// sont en .jpeg, .JPG (majuscule) etc. au lieu de .jpg.
-const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG', 'webp'];
+Tu viens de terminer le niveau intermédiaire, bravo !
 
-function loadImageWithFallback(imgEl, baseName, placeholderEl){
-  let i = 0;
-  imgEl.onerror = null;
-  if(placeholderEl) placeholderEl.style.display = 'none';
+[Écris ici ta lettre personnalisée pour ce niveau...]
 
-  function tryNext(){
-    if(i >= PHOTO_EXTENSIONS.length){
-      imgEl.style.display = 'none';
-      if(placeholderEl){
-        placeholderEl.style.display = 'flex';
-        placeholderEl.textContent = `📸 Photo manquante : ${baseName} (essayé .jpg, .jpeg, .png...)`;
-      }
-      return;
-    }
-    imgEl.src = `${baseName}.${PHOTO_EXTENSIONS[i]}`;
-    i++;
-  }
-  imgEl.style.display = 'block';
-  imgEl.onerror = tryNext;
-  tryNext();
-}
+Je t'aime.`;
+
+const LOVE_LETTER_DIFFICILE =
+`Mon amour,
+
+Le niveau difficile n'avait aucune chance face à toi.
+
+[Écris ici ta lettre personnalisée pour ce niveau...]
+
+Je t'aime.`;
+
+const LOVE_LETTER_TRESDIFFICILE =
+`Mon amour,
+
+Tu as tout réussi, jusqu'au bout. Voici ta dernière surprise.
+
+[Écris ici ta lettre personnalisée pour ce niveau...]
+
+Je t'aime.`;
+
+// ===================================================== //
+// CONFIGURATION DES 4 NIVEAUX
+// ===================================================== //
+const LEVELS = [
+  {
+    id: "facile",
+    title: "Niveau Facile",
+    subtitle: "13 questions · Souvenirs de nous",
+    questions: QUESTIONS_FACILE,
+    letter: LOVE_LETTER_FACILE,
+    couplePhoto: true,
+    gifts: [],
+    musicFile: "casual.mp3", // Doja Cat - Casual
+  },
+  {
+    id: "intermediaire",
+    title: "Niveau Intermédiaire",
+    subtitle: "15 questions · Un cadeau surprise",
+    questions: QUESTIONS_INTERMEDIAIRE,
+    letter: LOVE_LETTER_INTERMEDIAIRE,
+    couplePhoto: false,
+    musicFile: "earned-it.mp3", // The Weeknd - Earned It
+    gifts: [
+      // ===================================================== //
+      // MODIFIE ICI le texte du cadeau "livraison de sac"
+      // ===================================================== //
+      { icon: "👜", title: "Une livraison surprise", text: "[Précise ici les détails du sac que tu vas lui offrir/livrer...]" },
+    ],
+  },
+  {
+    id: "difficile",
+    title: "Niveau Difficile",
+    subtitle: "15 questions · 2 cadeaux à débloquer",
+    questions: QUESTIONS_DIFFICILE,
+    letter: LOVE_LETTER_DIFFICILE,
+    couplePhoto: false,
+    musicFile: "die-for-you.mp3", // The Weeknd - Die For You
+    gifts: [
+      // ===================================================== //
+      // MODIFIE ICI les 2 cadeaux du niveau difficile
+      // ===================================================== //
+      { icon: "🎁", title: "Un cadeau rien que pour toi", text: "[Décris ici le cadeau que tu offres...]" },
+      { icon: "👗", title: "Le vêtement de ton choix", text: "[Précise ici les modalités (budget, boutique...)]" },
+    ],
+  },
+  {
+    id: "tresdifficile",
+    title: "Niveau Très Difficile",
+    subtitle: "15 questions · Le grand cadeau final",
+    questions: QUESTIONS_TRESDIFFICILE,
+    letter: LOVE_LETTER_TRESDIFFICILE,
+    couplePhoto: false,
+    musicFile: "call-out-my-name.mp3", // The Weeknd - Call Out My Name
+    gifts: [
+      // ===================================================== //
+      // MODIFIE ICI les 2 cadeaux du niveau très difficile
+      // ===================================================== //
+      { icon: "🍽️", title: "Un dîner où tu veux", text: "[Précise ici les modalités du dîner...]" },
+      { icon: "👠", title: "La paire de chaussures de ton choix", text: "[Précise ici les modalités (budget, boutique...)]" },
+    ],
+  },
+];
 
 /* =========================================================================
    LOGIQUE DU JEU — tu n'as normalement pas besoin de toucher à ce qui suit
    ========================================================================= */
 
+let currentLevel = null;
 let currentIndex = 0;
 let score = 0;
-let selectedChoiceIndex = null;
 
 const screens = {
   start: document.getElementById('screen-start'),
+  levels: document.getElementById('screen-levels'),
   quiz: document.getElementById('screen-quiz'),
   result: document.getElementById('screen-result'),
 };
 
 function showScreen(name){
-  Object.values(screens).forEach(s => s.classList.remove('active'));
+  clearFleeListeners();
+  Object.values(screens).forEach(function(s){ s.classList.remove('active'); });
   screens[name].classList.add('active');
 }
 
-function startQuiz(){
+/* ---------------- Progression (sauvegardée dans le navigateur) ---------------- */
+const PROGRESS_KEY = 'quizAmourProgress_v2';
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if(raw) return JSON.parse(raw);
+  } catch(e){}
+  return { unlocked: ['facile'], rewards: {} };
+}
+
+function saveProgress(p){
+  try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch(e){}
+}
+
+let progress = loadProgress();
+
+function isUnlocked(levelId){ return progress.unlocked.indexOf(levelId) !== -1; }
+
+function unlockNext(levelId, rewardStatus){
+  progress.rewards[levelId] = rewardStatus; // 'won' ou 'skipped'
+  const idx = LEVELS.findIndex(function(l){ return l.id === levelId; });
+  const next = LEVELS[idx + 1];
+  if(next && progress.unlocked.indexOf(next.id) === -1){
+    progress.unlocked.push(next.id);
+  }
+  saveProgress(progress);
+}
+
+/* ---------------- Ecran : sélection du niveau ---------------- */
+function renderLevelList(){
+  const wrap = document.getElementById('level-list');
+  wrap.innerHTML = '';
+  LEVELS.forEach(function(level){
+    const unlocked = isUnlocked(level.id);
+    const rewardStatus = progress.rewards[level.id];
+    const div = document.createElement('div');
+    div.className = 'level-card ' + (unlocked ? 'unlocked' : 'locked') + (rewardStatus === 'won' ? ' won' : '');
+
+    let statusText = '';
+    if(!unlocked){
+      statusText = '<div class="level-status locked-text">🔒 Verrouillé</div>';
+    } else if(rewardStatus === 'won'){
+      statusText = '<div class="level-status">✓ Cadeau débloqué — rejouer ?</div>';
+    } else if(rewardStatus === 'skipped'){
+      statusText = '<div class="level-status locked-text">Cadeau manqué — retenter ta chance ?</div>';
+    } else {
+      statusText = '<div class="level-status locked-text">Prêt à jouer</div>';
+    }
+
+    div.innerHTML = '<h3>' + level.title + '</h3><p>' + level.subtitle + '</p>' + statusText;
+    if(unlocked){
+      div.addEventListener('click', function(){ startLevel(level); });
+    }
+    wrap.appendChild(div);
+  });
+}
+
+function startLevel(level){
+  currentLevel = level;
   currentIndex = 0;
   score = 0;
-  document.getElementById('result-win').style.display = 'none';
-  document.getElementById('result-lose').style.display = 'none';
-  document.getElementById('letter-content').classList.remove('show');
-  document.getElementById('envelope').classList.remove('open');
+  switchLevelMusic(level);
   showScreen('quiz');
   renderQuestion();
 }
 
+/* ---------------- Ecran : quiz ---------------- */
 function renderQuestion(){
-  const q = QUESTIONS[currentIndex];
-  document.getElementById('progress-text').textContent = `Question ${currentIndex + 1} sur ${QUESTIONS.length}`;
-  document.getElementById('score-text').textContent = `Score : ${score}`;
-  document.getElementById('progress-fill').style.width = `${(currentIndex / QUESTIONS.length) * 100}%`;
+  clearFleeListeners();
+  const q = currentLevel.questions[currentIndex];
+  const total = currentLevel.questions.length;
+  document.getElementById('progress-text').textContent = 'Question ' + (currentIndex + 1) + ' sur ' + total;
+  document.getElementById('score-text').textContent = 'Score : ' + score;
+  document.getElementById('progress-fill').style.width = ((currentIndex / total) * 100) + '%';
   document.getElementById('part-label').textContent = q.part;
   document.getElementById('question-text').textContent = q.text;
 
@@ -690,24 +785,46 @@ function renderQuestion(){
   choicesWrap.innerHTML = '';
   const letters = ['A','B','C','D','E','F'];
 
-  q.choices.forEach((choice, idx) => {
+  q.choices.forEach(function(choice, idx){
+    const wrap = document.createElement('div');
+    wrap.className = 'choice-wrap';
+
     const btn = document.createElement('button');
     btn.className = 'choice-btn';
-    btn.innerHTML = `<span class="choice-letter">${letters[idx]}</span>${choice.label}`;
-    btn.addEventListener('click', () => selectChoice(idx));
-    choicesWrap.appendChild(btn);
+    btn.innerHTML = '<span class="choice-letter">' + letters[idx] + '</span>' + choice.label;
+
+    const isTrap = q.trap && q.trap.choiceIndex === idx;
+    if(isTrap){
+      btn.classList.add('trap');
+      registerFlee(btn);
+      const hint = document.createElement('div');
+      hint.className = 'trap-hint';
+      hint.textContent = "Essaie de m'attraper... 😏";
+      wrap.appendChild(btn);
+      wrap.appendChild(hint);
+    } else {
+      btn.addEventListener('click', function(){ selectChoice(idx); });
+      wrap.appendChild(btn);
+    }
+
+    choicesWrap.appendChild(wrap);
   });
 }
 
 function selectChoice(idx){
-  const q = QUESTIONS[currentIndex];
+  const q = currentLevel.questions[currentIndex];
   const choice = q.choices[idx];
   const isCorrect = Array.isArray(q.correctAnswer)
-    ? q.correctAnswer.includes(idx)
+    ? q.correctAnswer.indexOf(idx) !== -1
     : idx === q.correctAnswer;
-  if(isCorrect) score++;
+  if(isCorrect){
+    score++;
+    flashScreen('correct');
+  } else {
+    flashScreen('wrong');
+  }
 
-  document.getElementById('score-text').textContent = `Score : ${score}`;
+  document.getElementById('score-text').textContent = 'Score : ' + score;
 
   const img = document.getElementById('overlay-img');
   const placeholder = document.getElementById('overlay-placeholder');
@@ -725,40 +842,260 @@ function selectChoice(idx){
 function nextQuestion(){
   document.getElementById('answer-overlay').classList.remove('active');
   currentIndex++;
-  if(currentIndex < QUESTIONS.length){
+  const total = currentLevel.questions.length;
+  if(currentIndex < total){
     renderQuestion();
   } else {
     document.getElementById('progress-fill').style.width = '100%';
-    finishQuiz();
+    finishLevel();
   }
 }
 
-function finishQuiz(){
+/* ---------------- Ecran : résultat (généré dynamiquement) ---------------- */
+function finishLevel(){
   showScreen('result');
-  if(score >= SCORE_TO_WIN){
-    document.getElementById('result-win').style.display = 'block';
-    document.getElementById('final-score-num').textContent = score;
-    document.getElementById('love-letter-text').textContent = LOVE_LETTER;
-    loadImageWithFallback(
-      document.getElementById('couple-photo-img'),
-      'photo_couple',
-      document.getElementById('couple-photo-placeholder')
-    );
-    launchConfetti();
+  const total = currentLevel.questions.length;
+  const isPerfect = score >= total; // score parfait obligatoire
+  if(isPerfect){
+    renderRewardScreen(currentLevel);
   } else {
-    document.getElementById('result-lose').style.display = 'block';
-    document.getElementById('final-score-num-lose').textContent = score;
+    renderRetrySkipScreen(currentLevel, score, total);
   }
 }
 
-function openEnvelope(){
-  const env = document.getElementById('envelope');
-  if(env.classList.contains('open')) return;
-  env.classList.add('open');
-  setTimeout(() => {
-    document.getElementById('letter-content').classList.add('show');
-    document.getElementById('letter-content').scrollIntoView({ behavior:'smooth', block:'center' });
-  }, 550);
+function renderRetrySkipScreen(level, sc, total){
+  const card = document.getElementById('result-card');
+  card.innerHTML =
+    '<div class="retry-emoji">🙈</div>' +
+    '<h2>Pas mal... mais pas encore assez !</h2>' +
+    '<div class="score-display"><span>' + sc + '</span><span>/' + total + '</span></div>' +
+    '<p class="retry-msg">Il te faut un score <strong>parfait</strong> pour débloquer le cadeau de ce niveau.<br>Que veux-tu faire ?</p>' +
+    '<div class="choice-modal-buttons">' +
+      '<button class="btn full" id="btn-retry-level">Recommencer depuis le début 🔁</button>' +
+      '<button class="btn ghost full" id="btn-skip-level">Passer au niveau suivant sans le cadeau</button>' +
+    '</div>';
+  document.getElementById('btn-retry-level').addEventListener('click', function(){ startLevel(level); });
+  document.getElementById('btn-skip-level').addEventListener('click', function(){
+    unlockNext(level.id, 'skipped');
+    showScreen('levels');
+    renderLevelList();
+  });
+}
+
+function renderRewardScreen(level){
+  unlockNext(level.id, 'won');
+  rampVolume(0.65, 800); // la musique s'intensifie à la fin du niveau
+  const card = document.getElementById('result-card');
+  const total = level.questions.length;
+
+  card.innerHTML =
+    '<div class="heart-loop">🎉</div>' +
+    '<h2>Bravo, tu me connais par cœur !</h2>' +
+    '<div class="score-display"><span>' + total + '</span><span>/' + total + '</span></div>' +
+    '<p class="envelope-hint">Une lettre t\'attend... clique sur l\'enveloppe 👇</p>' +
+    '<div class="envelope" id="envelope">' +
+      '<div class="envelope-letter"></div>' +
+      '<div class="envelope-body"></div>' +
+      '<div class="wax-seal">♥</div>' +
+      '<div class="envelope-flap"></div>' +
+    '</div>' +
+    '<div class="envelope-buttons">' +
+      '<button class="btn" id="btn-open-envelope">Ouvrir ma lettre d\'amour</button>' +
+      '<button class="btn ghost" id="btn-refuse-envelope">Refuser la lettre et me faire un bisou</button>' +
+    '</div>' +
+    '<div id="letter-content">' +
+      '<div class="couple-photo-wrap" id="couple-photo-wrap" style="' + (level.couplePhoto ? '' : 'display:none;') + '">' +
+        '<img id="couple-photo-img" src="" alt="Notre photo de couple" style="display:none;">' +
+        '<div class="placeholder" id="couple-photo-placeholder" style="display:none;">📸 Photo manquante : photo_couple</div>' +
+      '</div>' +
+      '<p id="love-letter-text"></p>' +
+      '<div id="post-letter-action"></div>' +
+      '<div class="gift-grid ' + (level.gifts.length > 1 ? 'two' : '') + '" id="gift-grid" style="display:none;"></div>' +
+    '</div>' +
+    '<div class="envelope-buttons" style="margin-top:28px;">' +
+      '<button class="btn ghost" id="btn-back-menu">Voir les niveaux</button>' +
+    '</div>';
+
+  launchConfetti();
+
+  const envelope = document.getElementById('envelope');
+  const refuseBtn = document.getElementById('btn-refuse-envelope');
+  registerFlee(refuseBtn);
+
+  document.getElementById('btn-open-envelope').addEventListener('click', function(){
+    if(envelope.classList.contains('open')) return;
+    envelope.classList.add('open');
+    playEnvelopeSound();
+    rampVolume(0.85, 700); // encore plus intense pendant la lecture de la lettre
+    setTimeout(function(){
+      document.getElementById('letter-content').classList.add('show');
+      document.getElementById('love-letter-text').textContent = level.letter;
+
+      if(level.couplePhoto){
+        loadImageWithFallback(
+          document.getElementById('couple-photo-img'),
+          'photo_couple',
+          document.getElementById('couple-photo-placeholder')
+        );
+        rampVolume(1.0, 700); // intensité maximale à la découverte de la photo
+      }
+
+      if(level.gifts && level.gifts.length > 0){
+        const actionWrap = document.getElementById('post-letter-action');
+        const finishBtn = document.createElement('button');
+        finishBtn.className = 'btn full';
+        finishBtn.textContent = "J'ai fini de lire ♥";
+        finishBtn.addEventListener('click', function(){
+          finishBtn.remove();
+          revealGifts(level);
+        });
+        actionWrap.appendChild(finishBtn);
+      }
+
+      document.getElementById('letter-content').scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 550);
+  });
+
+  document.getElementById('btn-back-menu').addEventListener('click', function(){
+    showScreen('levels');
+    renderLevelList();
+  });
+}
+
+function revealGifts(level){
+  rampVolume(1.0, 700); // intensité maximale à la découverte du/des cadeau(x)
+  const grid = document.getElementById('gift-grid');
+  grid.style.display = 'grid';
+  grid.innerHTML = '';
+  level.gifts.forEach(function(gift, i){
+    const card = document.createElement('div');
+    card.className = 'gift-card';
+    card.style.animationDelay = (i * 0.2) + 's';
+    card.innerHTML = '<div class="gift-icon">' + gift.icon + '</div><h4>' + gift.title + '</h4><p>' + gift.text + '</p>';
+    grid.appendChild(card);
+  });
+  launchConfetti();
+  grid.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+/* ---------------- Chargement d'image avec repli d'extensions ---------------- */
+const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG', 'webp'];
+
+function loadImageWithFallback(imgEl, baseName, placeholderEl){
+  let i = 0;
+  imgEl.onerror = null;
+  if(placeholderEl) placeholderEl.style.display = 'none';
+
+  function tryNext(){
+    if(i >= PHOTO_EXTENSIONS.length){
+      imgEl.style.display = 'none';
+      if(placeholderEl){
+        placeholderEl.style.display = 'flex';
+        placeholderEl.textContent = '📸 Photo manquante : ' + baseName + ' (essayé .jpg, .jpeg, .png...)';
+      }
+      return;
+    }
+    imgEl.src = baseName + '.' + PHOTO_EXTENSIONS[i];
+    i++;
+  }
+  imgEl.style.display = 'block';
+  imgEl.onerror = tryNext;
+  tryNext();
+}
+
+/* ---------------- Bouton fuyant ("jeu de bug") ---------------- */
+let fleeCleanups = [];
+
+function clearFleeListeners(){
+  fleeCleanups.forEach(function(fn){ fn(); });
+  fleeCleanups = [];
+}
+
+function registerFlee(el){
+  const margin = 12;
+
+  function relocate(){
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const w = el.offsetWidth || 140, h = el.offsetHeight || 48;
+    const maxX = Math.max(vw - w - margin * 2, 0);
+    const maxY = Math.max(vh - h - margin * 2, 0);
+    const x = margin + Math.random() * maxX;
+    const y = margin + Math.random() * maxY;
+    el.style.position = 'fixed';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.margin = '0';
+    el.style.transition = 'left .16s ease, top .16s ease';
+    el.style.zIndex = '999';
+  }
+
+  function onPointerMove(clientX, clientY){
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dist = Math.hypot(clientX - cx, clientY - cy);
+    const threshold = Math.max(rect.width, rect.height) * 1.1 + 60;
+    if(dist < threshold){
+      relocate();
+    }
+  }
+
+  function handleMouseMove(e){ onPointerMove(e.clientX, e.clientY); }
+  function handleTouchMove(e){
+    if(e.touches && e.touches[0]) onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
+  }
+  function handleClick(e){ e.preventDefault(); relocate(); }
+  function handleEnter(){ relocate(); }
+
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('touchmove', handleTouchMove, { passive:true });
+  document.addEventListener('touchstart', handleTouchMove, { passive:true });
+  el.addEventListener('mouseenter', handleEnter);
+  el.addEventListener('click', handleClick);
+
+  fleeCleanups.push(function(){
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('touchmove', handleTouchMove);
+    document.removeEventListener('touchstart', handleTouchMove);
+    el.removeEventListener('mouseenter', handleEnter);
+    el.removeEventListener('click', handleClick);
+  });
+}
+
+/* ---------------- Sons (Web Audio API, aucun fichier requis) ---------------- */
+let audioCtx = null;
+function getAudioCtx(){
+  if(!audioCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    audioCtx = new AC();
+  }
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function flashScreen(type){
+  const el = document.getElementById('flash-layer');
+  el.classList.remove('flash-correct', 'flash-wrong');
+  // force le redémarrage de l'animation même si elle vient de jouer
+  void el.offsetWidth;
+  el.classList.add(type === 'correct' ? 'flash-correct' : 'flash-wrong');
+}
+
+function playEnvelopeSound(){
+  const ctx = getAudioCtx();
+  if(!ctx) return;
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = 'sine';
+  const t0 = ctx.currentTime;
+  osc.frequency.setValueAtTime(300, t0);
+  osc.frequency.exponentialRampToValueAtTime(950, t0 + 0.4);
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(0.2, t0 + 0.05);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.5);
+  osc.connect(g); g.connect(ctx.destination);
+  osc.start(t0); osc.stop(t0 + 0.55);
 }
 
 /* ---------------- Confettis (canvas) ---------------- */
@@ -769,17 +1106,19 @@ function launchConfetti(){
   canvas.height = window.innerHeight;
 
   const colors = ['#c14fd1','#7a3e99','#e3b563','#2a0e33','#ffffff'];
-  const pieces = Array.from({length: 140}, () => ({
-    x: Math.random() * canvas.width,
-    y: -20 - Math.random() * canvas.height,
-    size: 6 + Math.random() * 6,
-    speed: 2 + Math.random() * 3,
-    drift: (Math.random() - 0.5) * 2,
-    rotation: Math.random() * 360,
-    spin: (Math.random() - 0.5) * 8,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    shape: Math.random() > 0.5 ? 'heart' : 'square',
-  }));
+  const pieces = Array.from({length: 140}, function(){
+    return {
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * canvas.height,
+      size: 6 + Math.random() * 6,
+      speed: 2 + Math.random() * 3,
+      drift: (Math.random() - 0.5) * 2,
+      rotation: Math.random() * 360,
+      spin: (Math.random() - 0.5) * 8,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      shape: Math.random() > 0.5 ? 'heart' : 'square',
+    };
+  });
 
   let frame = 0;
   const maxFrames = 260;
@@ -802,7 +1141,7 @@ function launchConfetti(){
 
   function tick(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pieces.forEach(p => {
+    pieces.forEach(function(p){
       p.y += p.speed;
       p.x += p.drift;
       p.rotation += p.spin;
@@ -827,7 +1166,7 @@ function launchConfetti(){
   tick();
 }
 
-window.addEventListener('resize', () => {
+window.addEventListener('resize', function(){
   const canvas = document.getElementById('confetti-canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -848,12 +1187,62 @@ function spawnPetals(){
   }
 }
 
-/* ---------------- Ecouteurs d'evenements ---------------- */
-document.getElementById('btn-start').addEventListener('click', startQuiz);
-document.getElementById('btn-next').addEventListener('click', nextQuestion);
-document.getElementById('btn-retry').addEventListener('click', startQuiz);
-document.getElementById('envelope').addEventListener('click', openEnvelope);
+/* ---------------- Musique de fond (une piste par niveau) ---------------- */
+const BASE_VOLUME = 0.45;
 
+function switchLevelMusic(level){
+  const audio = document.getElementById('bg-music');
+  const wasPlaying = !audio.paused;
+  audio.src = level.musicFile;
+  audio.volume = BASE_VOLUME;
+  if(wasPlaying){
+    audio.play().catch(function(){});
+  }
+}
+
+function rampVolume(target, duration){
+  const audio = document.getElementById('bg-music');
+  const start = audio.volume;
+  const startTime = performance.now();
+  function step(now){
+    const t = Math.min((now - startTime) / duration, 1);
+    audio.volume = start + (target - start) * t;
+    if(t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function setupMusicPlayer(){
+  const audio = document.getElementById('bg-music');
+  const btn = document.getElementById('music-toggle');
+  btn.addEventListener('click', function(){
+    if(audio.paused){
+      audio.play().catch(function(){
+        btn.textContent = '🚫';
+        btn.title = "Fichier audio introuvable — dépose les .mp3 à côté du HTML";
+      });
+      btn.classList.add('playing');
+      btn.textContent = '🎶';
+    } else {
+      audio.pause();
+      btn.classList.remove('playing');
+      btn.textContent = '🎵';
+    }
+  });
+}
+
+/* ---------------- Ecouteurs d'evenements ---------------- */
+document.getElementById('btn-start').addEventListener('click', function(){
+  showScreen('levels');
+  renderLevelList();
+});
+document.getElementById('btn-next').addEventListener('click', nextQuestion);
+document.getElementById('btn-back-to-levels').addEventListener('click', function(){
+  showScreen('levels');
+  renderLevelList();
+});
+
+setupMusicPlayer();
 spawnPetals();
 </script>
 </body>
