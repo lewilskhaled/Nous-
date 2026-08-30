@@ -122,6 +122,16 @@
   #question-text{ font-size:clamp(20px,4.6vw,25px); line-height:1.3; margin-bottom:22px; }
 
   #choices{ display:grid; grid-template-columns: 1fr; gap:12px; }
+
+  .open-answer-textarea{
+    width:100%; font-family:'Quicksand'; font-size:15px; color:var(--ink);
+    background:var(--surface); border:2px solid transparent; border-radius:16px;
+    padding:16px 18px; resize:vertical; min-height:110px;
+  }
+  .open-answer-textarea:focus{ outline:none; border-color:var(--rouge); }
+  .open-answer-textarea::placeholder{ color:var(--ink-soft); }
+  .open-question-buttons{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+  .btn:disabled{ opacity:.4; cursor:not-allowed; box-shadow:none; transform:none; }
   .choice-wrap{ display:flex; flex-direction:column; gap:4px; }
   .choice-btn{
     text-align:left; font-family:'Quicksand'; font-weight:600; font-size:16px;
@@ -342,6 +352,14 @@
       <h2 id="question-text">Chargement...</h2>
 
       <div id="choices"></div>
+
+      <div id="open-question-wrap" style="display:none;">
+        <textarea id="open-answer-input" class="open-answer-textarea" rows="4" placeholder="Écris ta réponse ici, sincèrement..."></textarea>
+        <div class="open-question-buttons">
+          <button class="btn ghost full" id="btn-share-whatsapp">Partager ma réponse avec toi via WhatsApp 💬</button>
+          <button class="btn full" id="btn-continue-open" disabled>Continuer →</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -523,101 +541,533 @@ const QUESTIONS_FACILE = [
 ];
 
 // -------------------------------------------------------------------------
-// NIVEAU 2 : INTERMEDIAIRE (15 questions) — A REMPLIR
-// La 1ère question montre un exemple du "bouton fuyant" (trap). Regarde le
-// champ `trap: { choiceIndex: 0 }` : ça rend le choix A impossible à
-// cliquer, elle est donc "forcée" de cliquer sur B. Retire cette ligne
-// pour désactiver l'effet sur une question, ou ajoute-la à une autre.
+// NIVEAU 2 : INTERMEDIAIRE (15 questions)
+// Astuce : pour activer le "bouton fuyant" sur une question, ajoute
+// trap: { choiceIndex: X } à l'objet de la question (X = index du choix
+// qui doit fuir le curseur). Aucune question n'a l'effet activé pour le
+// moment — ajoute-le toi-même où tu veux t'en servir.
 // -------------------------------------------------------------------------
-const QUESTIONS_INTERMEDIAIRE = Array.from({ length: 15 }, function(_, i){
-  const n = i + 1;
-  const base = {
+const QUESTIONS_INTERMEDIAIRE = [
+  {
     part: "Niveau Intermédiaire",
-    text: "Question " + n + " du niveau Intermédiaire (à remplir)",
-    correctAnswer: 1, // MODIFIER ICI
+    text: "Quand je suis très concentré ou stressé, quelle est ma manie ?",
+    correctAnswer: 1,
     choices: [
-      { label: "Toi", photo: "im" + n + "_a", caption: "..." },
-      { label: "Moi", photo: "im" + n + "_b", caption: "..." },
+      { label: "Je me mords la lèvre", photo: "im1_a", caption: "..." },
+      { label: "Je tape du pied", photo: "im1_b", caption: "..." },
+      { label: "Je deviens totalement silencieux", photo: "im1_c", caption: "..." },
+      { label: "Je touche mes cheveux", photo: "im1_d", caption: "..." },
+      { label: "Je mets la main dans ton caleçon", photo: "im1_e", caption: "..." },
     ]
-  };
-  if (n === 1) {
-    base.text = "Qui est le plus intelligent des deux ? 😏";
-    base.trap = { choiceIndex: 0 }; // exemple du bouton fuyant sur le choix "Toi"
-  }
-  return base;
-});
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Qu'est-ce qui a le plus de chances de me remettre de bonne humeur après une mauvaise journée ?",
+    correctAnswer: 3,
+    choices: [
+      { label: "Un bon repas préparé avec amour", photo: "im2_a", caption: "..." },
+      { label: "Un gros câlin en silence", photo: "im2_b", caption: "..." },
+      { label: "Me laisser jouer/regarder ma série tranquillement", photo: "im2_c", caption: "..." },
+      { label: "Un massage / Un corps à corps", photo: "im2_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quelle est ma température idéale pour dormir ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Chambre légèrement froide, emmitouflé sous le drap", photo: "im3_a", caption: "..." },
+      { label: "Il faut qu'il fasse chaud", photo: "im3_b", caption: "..." },
+      { label: "Une jambe sous la couette, une jambe dehors", photo: "im3_c", caption: "..." },
+      { label: "Fenêtre ouverte peu importe la saison", photo: "im3_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Comment je gère mon réveil le matin ?",
+    correctAnswer: 2,
+    choices: [
+      { label: "Je me lève dès la première sonnerie", photo: "im4_a", caption: "..." },
+      { label: "Je décale l'alarme au moins 5 fois", photo: "im4_b", caption: "..." },
+      { label: "Pas besoin de réveil", photo: "im4_c", caption: "..." },
+      { label: "Je mets 3 réveils différents à 5 minutes d'intervalle", photo: "im4_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quand je suis malade ou que j'ai une petite grippe, je suis quel genre de mec ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Un bébé qui a besoin qu'on s'occupe de lui à 100%", photo: "im5_a", caption: "..." },
+      { label: "Je fais comme si de rien n'était", photo: "im5_b", caption: "..." },
+      { label: "Je dors pendant 24h d'affilée", photo: "im5_c", caption: "..." },
+      { label: "Je me plains toutes les 5 minutes", photo: "im5_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Où est-ce qu'on était quand je me suis dit pour la première fois \"C'est elle\" ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Lors de notre tout premier rendez-vous", photo: "im6_a", caption: "..." },
+      { label: "À la cafète", photo: "im6_b", caption: "..." },
+      { label: "Dans les toilettes", photo: "im6_c", caption: "..." },
+      { label: "Un soir tranquille posés à la maison pendant qu'on s'écrivait", photo: "im6_d", caption: "..." },
+      { label: "En salle de cours", photo: "im6_e", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quel est mon style de vêtement dans lequel je me sens le plus BG (beau gosse) ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Streetwear / Jogging stylé", photo: "im7_a", caption: "..." },
+      { label: "Chemise / Tenue chic et bien habillée", photo: "im7_b", caption: "..." },
+      { label: "T-shirt simple et jean brut", photo: "im7_c", caption: "..." },
+      { label: "Tenue de sport", photo: "im7_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quelle est ma façon la plus bizarre d'exprimer mon affection ?",
+    correctAnswer: 3,
+    choices: [
+      { label: "Te mordre ou te pincer gentiment", photo: "im8_a", caption: "..." },
+      { label: "Te donner des petits surnoms ridicules", photo: "im8_b", caption: "..." },
+      { label: "Te fixer dans les yeux sans rien dire", photo: "im8_c", caption: "..." },
+      { label: "Te toucher sans m'arrêter", photo: "im8_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quelle est la remarque ou la phrase que tu me dis le plus souvent ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Passe ton baume", photo: "im9_a", caption: "..." },
+      { label: "Je t'aime", photo: "im9_b", caption: "..." },
+      { label: "J'ai envie de rentrer dans ta peau", photo: "im9_c", caption: "..." },
+      { label: "Tu m'énerve", photo: "im9_d", caption: "..." },
+      { label: "J'ai envie", photo: "im9_e", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quelle est la phrase que moi je dis tout le temps ?",
+    correctAnswer: [0, 2],
+    choices: [
+      { label: "J'ai envie de presser tes fesses", photo: "im10_a", caption: "..." },
+      { label: "Je t'aime", photo: "im10_b", caption: "..." },
+      { label: "Ton cul me manque", photo: "im10_c", caption: "..." },
+      { label: "Fais-moi à manger", photo: "im10_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Si tu me prépares une surprise, comment je réagis ?",
+    correctAnswer: [0, 3],
+    choices: [
+      { label: "J'essaie de deviner toutes les 3 min ce que c'est tellement je suis curieux", photo: "im11_a", caption: "..." },
+      { label: "Je suis choqué et super ému", photo: "im11_b", caption: "..." },
+      { label: "Je fais le mec détaché mais au fond je suis trop content", photo: "im11_c", caption: "..." },
+      { label: "Je culpabilise de ne rien t'avoir offert en retour", photo: "im11_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quel est le premier détail physique chez toi que j'ai complimenté ?",
+    correctAnswer: 4,
+    choices: [
+      { label: "Tes yeux", photo: "im12_a", caption: "..." },
+      { label: "Ton sourire", photo: "im12_b", caption: "..." },
+      { label: "Tes cheveux", photo: "im12_c", caption: "..." },
+      { label: "Ton style vestimentaire", photo: "im12_d", caption: "..." },
+      { label: "Ton charisme", photo: "im12_e", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quel est mon projet secret le plus fou pour notre futur logement ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Une pièce entière dédiée à nos plaisirs (chambre rouge)", photo: "im13_a", caption: "..." },
+      { label: "Un dressing gigantesque", photo: "im13_b", caption: "..." },
+      { label: "Un immense jardin avec piscine", photo: "im13_c", caption: "..." },
+      { label: "Une cuisine de chef cuisinier", photo: "im13_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quel souvenir de nous deux me fait encore mourir de rire quand j'y repense tout seul ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Un repas partagé", photo: "im14_a", caption: "..." },
+      { label: "Un message que tu m'as envoyé", photo: "im14_b", caption: "..." },
+      { label: "Un moment au toilette", photo: "im14_c", caption: "..." },
+      { label: "Notre première tentative de cuisiner même à distance", photo: "im14_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Intermédiaire",
+    text: "Quand on fait une balade ensemble, quelle est ma mauvaise habitude ?",
+    correctAnswer: 4,
+    choices: [
+      { label: "Je marche beaucoup trop vite et je te distance", photo: "im15_a", caption: "..." },
+      { label: "Je m'arrête toutes les 30 secondes pour regarder un truc", photo: "im15_b", caption: "..." },
+      { label: "Je suis pendu à mon téléphone", photo: "im15_c", caption: "..." },
+      { label: "Je veux absolument qu'on se tienne la main tout le long", photo: "im15_d", caption: "..." },
+      { label: "Je marche trop lentement", photo: "im15_e", caption: "..." },
+    ]
+  },
+];
 
 // -------------------------------------------------------------------------
-// NIVEAU 3 : DIFFICILE (15 questions) — A REMPLIR
+// NIVEAU 3 : DIFFICILE (15 questions attendues — 13 reçues pour l'instant,
+// les questions 14 et 15 sont encore des placeholders à remplir).
 // -------------------------------------------------------------------------
-const QUESTIONS_DIFFICILE = Array.from({ length: 15 }, function(_, i){
-  const n = i + 1;
-  return {
+const QUESTIONS_DIFFICILE = [
+  {
     part: "Niveau Difficile",
-    text: "Question " + n + " du niveau Difficile (à remplir)",
-    correctAnswer: 1, // MODIFIER ICI
+    text: "Quand on s'appelle le soir en vidéo/téléphone, je suis généralement en train de...",
+    correctAnswer: 0,
     choices: [
-      { label: "Toi", photo: "df" + n + "_a", caption: "..." },
-      { label: "Moi", photo: "df" + n + "_b", caption: "..." },
+      { label: "Être bien posé au lit à 100% concentré sur toi", photo: "df1_a", caption: "..." },
+      { label: "Faire 10 trucs en même temps", photo: "df1_b", caption: "..." },
+      { label: "Lutter pour ne pas m'endormir", photo: "df1_c", caption: "..." },
+      { label: "Te raconter toute ma journée dans les moindres détails", photo: "df1_d", caption: "..." },
     ]
-  };
-});
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quelle est la durée moyenne de nos plus longs appels téléphoniques/visio quand on part dans nos délires ?",
+    correctAnswer: 2,
+    choices: [
+      { label: "Moins de 30 minutes", photo: "df2_a", caption: "..." },
+      { label: "Entre 1h et 2h", photo: "df2_b", caption: "..." },
+      { label: "Plusieurs séquences d'appel de longue durée jusqu'à pas d'heure", photo: "df2_c", caption: "..." },
+      { label: "On laisse tourner l'appel toute la nuit", photo: "df2_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quelle est la manie ou le tic que je fais sans m'en rendre compte quand je suis très concentré sur mon téléphone ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Je me mords la lèvre inférieure", photo: "df3_a", caption: "..." },
+      { label: "Je fronce les sourcils", photo: "df3_b", caption: "..." },
+      { label: "Je me touche les cheveux", photo: "df3_c", caption: "..." },
+      { label: "Je me mets à fredonner/siffler", photo: "df3_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quelle est la toute première chose de toi que tu m'as envoyée par téléphone ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Une photo", photo: "df4_a", caption: "..." },
+      { label: "Une vidéo", photo: "df4_b", caption: "..." },
+      { label: "Un mot d'amour", photo: "df4_c", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quel est le cadeau ou la petite attention que tu m'as offerte et qui m'a le plus touché en secret ?",
+    correctAnswer: 0, // "Un accessoire"
+    choices: [
+      { label: "Un accessoire", photo: "df5_a", caption: "..." },
+      { label: "Un repas", photo: "df5_b", caption: "..." },
+      { label: "Un vêtement", photo: "df5_c", caption: "..." },
+      { label: "Tous", photo: "df5_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quand on s'appelle et que j'ai un coup de fatigue, quel est le signe qui ne trompe pas ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Je commence à bâiller toutes les 30 secondes", photo: "df6_a", caption: "..." },
+      { label: "Ma voix devient tout douce et lente", photo: "df6_b", caption: "..." },
+      { label: "Je réponds à côté de la plaque", photo: "df6_c", caption: "..." },
+      { label: "Mes yeux se ferment tout seuls en visio", photo: "df6_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quand on marche ensemble dans la rue, où se trouve ma main la plupart du temps ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Dans la tienne", photo: "df7_a", caption: "..." },
+      { label: "Dans ma poche", photo: "df7_b", caption: "..." },
+      { label: "Autour de tes épaules ou de ta taille", photo: "df7_c", caption: "..." },
+      { label: "Occupée avec mon téléphone", photo: "df7_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quelle est la promesse qu'on s'est faite pour plus tard et qui me tient le plus à cœur ?",
+    correctAnswer: [0, 2],
+    choices: [
+      { label: "Ta fidélité", photo: "df8_a", caption: "..." },
+      { label: "Ta compréhension", photo: "df8_b", caption: "..." },
+      { label: "Ton respect", photo: "df8_c", caption: "..." },
+      { label: "Des enfants", photo: "df8_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Si je devais perdre mon téléphone pendant une journée entière, quelle serait ma réaction ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Panique totale parce que je ne pourrais plus t'écrire", photo: "df9_a", caption: "..." },
+      { label: "Ça me ferait du bien une petite pause", photo: "df9_b", caption: "..." },
+      { label: "Aucune panique et je squatterais l'ordinateur", photo: "df9_c", caption: "..." },
+      { label: "Je chercherais partout en râlant", photo: "df9_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quel est le petit objet ou le souvenir de toi que je garde toujours chez moi ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Un bijou", photo: "df10_a", caption: "..." },
+      { label: "Un vêtement", photo: "df10_b", caption: "..." },
+      { label: "Une doudou", photo: "df10_c", caption: "..." },
+      { label: "Une photo", photo: "df10_d", caption: "..." },
+      { label: "Un document", photo: "df10_e", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Qu'est-ce qui me rend le plus fier d'être avec toi ?",
+    correctAnswer: [0, 3],
+    choices: [
+      { label: "Ton charisme et ta beauté", photo: "df11_a", caption: "..." },
+      { label: "Ton humour et ta répartie", photo: "df11_b", caption: "..." },
+      { label: "Ta gentillesse avec les gens", photo: "df11_c", caption: "..." },
+      { label: "La complicité évidente qu'on dégage", photo: "df11_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Quel est mon pire défaut quand je t'envoie des messages texte ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "J'envoie 10 petits messages d'un mot au lieu d'un seul gros bloc", photo: "df12_a", caption: "..." },
+      { label: "Je fais plein de fautes de frappe parce que j'écris trop vite", photo: "df12_b", caption: "..." },
+      { label: "J'oublie de répondre alors que j'ai lu le message dans ma tête", photo: "df12_c", caption: "..." },
+      { label: "J'utilise des émojis complètement hors sujet", photo: "df12_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Si on devait créer une règle officielle pour notre couple, ce serait quoi ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Interdiction de se coucher sans s'être réconciliés ou dit \"Je t'aime\"", photo: "df13_a", caption: "..." },
+      { label: "Toujours manger un dessert quand on sort", photo: "df13_b", caption: "..." },
+      { label: "Obligation de faire un câlin de 30 secondes minimum aux retrouvailles", photo: "df13_c", caption: "..." },
+      { label: "Un week-end surprise par mois", photo: "df13_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Qu'est-ce qui me manque le plus chez toi quand on passe plus d'une semaine sans se voir ?",
+    correctAnswer: 3,
+    choices: [
+      { label: "Ton odeur et tes câlins", photo: "df14_a", caption: "..." },
+      { label: "Tes fous rires et tes bêtises en direct", photo: "df14_b", caption: "..." },
+      { label: "Nos moments calmes posés à deux", photo: "df14_c", caption: "..." },
+      { label: "Absolument TOUT, c'est un calvaire !", photo: "df14_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Difficile",
+    text: "Si tu devais deviner mon pire cauchemar pour notre futur à deux, ce serait... ?",
+    correctAnswer: [1, 3],
+    choices: [
+      { label: "Qu'on devienne un couple de vieux blasés qui ne rigolent plus ensemble", photo: "df15_a", caption: "..." },
+      { label: "Qu'on n'arrive jamais à concrétiser notre projet d'habiter enfin ensemble", photo: "df15_b", caption: "..." },
+      { label: "De ne plus réussir à te faire sourire quand tu as un coup de mou", photo: "df15_c", caption: "..." },
+      { label: "Que tu te lasses de moi et que tu partes", photo: "df15_d", caption: "..." },
+    ]
+  },
+];
 
 // -------------------------------------------------------------------------
-// NIVEAU 4 : TRES DIFFICILE (15 questions) — A REMPLIR
+// NIVEAU 4 : TRES DIFFICILE (15 questions attendues — 7 reçues pour
+// l'instant, les questions 8 à 15 sont encore des placeholders à remplir).
 // -------------------------------------------------------------------------
-const QUESTIONS_TRESDIFFICILE = Array.from({ length: 15 }, function(_, i){
-  const n = i + 1;
-  return {
+const QUESTIONS_TRESDIFFICILE_RECUES = [
+  {
     part: "Niveau Très Difficile",
-    text: "Question " + n + " du niveau Très Difficile (à remplir)",
-    correctAnswer: 1, // MODIFIER ICI
+    text: "Quel est le nom de mon tout premier animal de compagnie (ou celui dont j'étais le plus proche plus jeune) ?",
+    correctAnswer: 2,
     choices: [
-      { label: "Toi", photo: "td" + n + "_a", caption: "..." },
-      { label: "Moi", photo: "td" + n + "_b", caption: "..." },
+      { label: "Thelma", photo: "td1_a", caption: "..." },
+      { label: "Jacky", photo: "td1_b", caption: "..." },
+      { label: "Myke", photo: "td1_c", caption: "..." },
+      { label: "Bouboule", photo: "td1_d", caption: "..." },
     ]
-  };
-});
+  },
+  {
+    part: "Niveau Très Difficile",
+    text: "Quel est mon pire souvenir d'enfance ou de jeunesse que je t'ai confié un soir au téléphone ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Un anniversaire", photo: "td2_a", caption: "..." },
+      { label: "Une sortie", photo: "td2_b", caption: "..." },
+      { label: "Un jour à l'école", photo: "td2_c", caption: "..." },
+      { label: "À la maison", photo: "td2_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Très Difficile",
+    text: "Quel est le premier message (ou mot) exact que je t'ai envoyé la toute première fois qu'on s'est parlé sur WhatsApp ?",
+    correctAnswer: 0,
+    choices: [
+      { label: "Une sélection de mes sons", photo: "td3_a", caption: "..." },
+      { label: "Une photo sexy", photo: "td3_b", caption: "..." },
+      { label: "Un message de flatterie", photo: "td3_c", caption: "..." },
+      { label: "Un compliment sur ton charisme", photo: "td3_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Très Difficile",
+    text: "Qu'est-ce qui me rassure le plus dans notre relation malgré les kilomètres qui nous séparent ?",
+    correctAnswer: 3,
+    choices: [
+      { label: "Le fait qu'on se parle tous les jours sans exception", photo: "td4_a", caption: "..." },
+      { label: "Le fait qu'on arrive à rigoler de tout comme deux meilleurs amis", photo: "td4_b", caption: "..." },
+      { label: "Le fait qu'on ait des projets clairs", photo: "td4_c", caption: "..." },
+      { label: "La confiance absolue qu'on a l'un envers l'autre", photo: "td4_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Très Difficile",
+    text: "Quel est le petit surnom discret que je t'écris uniquement quand je suis en mode ultra romantique ?",
+    correctAnswer: [0, 1],
+    choices: [
+      { label: "Ma puce", photo: "td5_a", caption: "..." },
+      { label: "Ma petite Princesse", photo: "td5_b", caption: "..." },
+      { label: "Mon cœur", photo: "td5_c", caption: "..." },
+      { label: "Bb", photo: "td5_d", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Très Difficile · 🔞",
+    text: "Quelle est ma forme de domination préférée ?",
+    correctAnswer: [1, 2],
+    choices: [
+      { label: "L'autorité verbale (les ordres, la voix)", photo: "td6_a", caption: "..." },
+      { label: "Le contrôle physique", photo: "td6_b", caption: "..." },
+      { label: "Le jeu psychologique", photo: "td6_c", caption: "..." },
+    ]
+  },
+  {
+    part: "Niveau Très Difficile · 🔞",
+    text: "Qu'est-ce que j'ai envie de te faire quand je te vois nue ?",
+    correctAnswer: 1,
+    choices: [
+      { label: "Juste un câlin", photo: "td7_a", caption: "..." },
+      { label: "Te baiser bien profond", photo: "td7_b", caption: "..." },
+      { label: "Te parler seulement", photo: "td7_c", caption: "..." },
+    ]
+  },
+];
+
+// ===================================================== //
+// Questions 8 à 15 : QUESTIONS OUVERTES (réponse libre, pas de choix,
+// PAS COMPTABILISÉES dans le score — voir plus bas).
+// ===================================================== //
+const QUESTIONS_TRESDIFFICILE_OUVERTES = [
+  {
+    part: "Niveau Très Difficile",
+    type: "open",
+    text: "Est-ce que tu considères que tu m'aimes autant que la première fois, ou aujourd'hui tu m'aimes moins suite à nos nombreuses disputes ?",
+  },
+  {
+    part: "Niveau Très Difficile",
+    type: "open",
+    text: "Est-ce que j'arrive à te traiter à juste valeur, ou j'ai encore du progrès à faire te concernant ?",
+  },
+  {
+    part: "Niveau Très Difficile · 🔞",
+    type: "open",
+    text: "Comment tu veux que je te traite pendant nos moments intimes ?",
+  },
+  {
+    part: "Niveau Très Difficile · 🔞",
+    type: "open",
+    text: "Entre le contraste brutal (passer du très chaud au très froid d'un coup) ou la montée très lente en intensité, qu'est-ce qui te plaît le plus ?",
+  },
+  {
+    part: "Niveau Très Difficile · 🔞",
+    type: "open",
+    text: "Jusqu'à quel point es-tu capable d'implorer ou de me supplier pour obtenir du plaisir que je t'ai privé ?",
+  },
+  {
+    part: "Niveau Très Difficile",
+    type: "open",
+    text: "Dis-moi tout ce que tu as sur le cœur à propos de nous, de notre relation — tu es entièrement libre de dire ce que tu veux.",
+  },
+  {
+    part: "Niveau Très Difficile · 🔞",
+    type: "open",
+    text: "Sur le sujet du sexe entre nous, exprime-toi en toute liberté — dis ce que tu veux sur le sujet.",
+  },
+  {
+    part: "Niveau Très Difficile",
+    type: "open",
+    text: "Partage-moi 3 problèmes de notre couple — on en reparlera ensemble sur WhatsApp une fois que tu auras terminé le jeu.",
+  },
+];
+
+const QUESTIONS_TRESDIFFICILE = QUESTIONS_TRESDIFFICILE_RECUES.concat(QUESTIONS_TRESDIFFICILE_OUVERTES);
 
 // ===================================================== //
 // LETTRES D'AMOUR — un texte par niveau. Utilise \n pour
 // aller à la ligne.
 // ===================================================== //
 const LOVE_LETTER_FACILE =
-`Mon amour,
+`Ma puce j'veux que tu sache que j'suis désolé pour toute les fois ou t'as eu mal par ma faute. Sache que j'fais tout pour être un meilleur homme pour toi car tu mérite que du bonheur et j'suis prêt a t'en donner autant que possible.
 
-Si tu lis ces mots, c'est que tu me connais par cœur (ou presque !).
+Ma puce je t'aime énormément et jdonnerai ma vie pour toi, jferai tout mon possible pour que tu sois mienne meme si tu l'est déja en vrai.
 
-[Écris ici ta lettre personnalisée...]
+Mon alloco promets moi que tu tiendra avec moi tu restera malgré tout jveux vraiment pouvoir compter sur toi jveux voir ta grosse tête sur le lit conjuguale chaque matin donc resteeeeeeeeeeeeee avec moiiiiiiiiiiiii, t'es à moi et a personne d'autre.
 
 Je t'aime.`;
 
 const LOVE_LETTER_INTERMEDIAIRE =
-`Mon amour,
+`Je te promets de continuer à prendre soin de nous, de te soutenir dans tes rêves, de sécher tes larmes les jours de tempête et d'être ton premier supporter, chaque jour. Ma peur ultime serait de ne pas réussir à te rendre aussi heureuse que tu me rends heureux.
 
-Tu viens de terminer le niveau intermédiaire, bravo !
+Merci d'être qui tu es. Merci de m'aimer.
 
-[Écris ici ta lettre personnalisée pour ce niveau...]
+Je t'aime, plus fort et plus profondément que les mots ne pourront jamais le dire.
 
-Je t'aime.`;
+À toi, pour toujours.`;
 
 const LOVE_LETTER_DIFFICILE =
-`Mon amour,
+`Avec toi, je n'ai jamais eu besoin d'essayer d'être quelqu'un d'autre. Je me sens juste bien, à ma place, et sincèrement chanceux. C'est fou à quel point tu es devenue essentielle, et à quel point l'idée de te rendre heureuse me tient à cœur. Ma plus grande peur, au fond, ce serait de ne pas réussir à te donner tout ce que tu mérites.
 
-Le niveau difficile n'avait aucune chance face à toi.
-
-[Écris ici ta lettre personnalisée pour ce niveau...]
+Merci d'être la personne que tu es, et merci d'être là ma petite princesse.
 
 Je t'aime.`;
 
 const LOVE_LETTER_TRESDIFFICILE =
-`Mon amour,
+`[COLLE ICI TA LETTRE PERSONNALISÉE POUR CE NIVEAU]`;
+  Ma puce
+Il suffit que je repense à nous, à ta peau sous mes doigts, à ton souffle quand je m'approche, pour que tout le reste s'efface. Tu n'as pas idée de l'effet que tu me fais, parfois juste avec un regard.
+ J'ai juste envie de te serrer contre moi, de t'embrasser sans me presser et de me perdre dans tes bras .J'ai envie d'avoir les mains baladeuses j'ai envie de glisser mes doigts entre tes vêtements entre ton dessous même si je sais que les soirs t'en porte pas. Pense a tout cque je pourrais te faire sur un lit pense au bruit qui raisonnera et qui sortira de ta bouche quand je te mettrai dans la position que t'aime. Encore que jte laisserai pas criée puisque si ma langue ne se trouve pas dans ta bouche alors j'utiliserai juste mes mains pour fermer ta bouche . Tu gardera tout au fond de toi tu prendra tout en toi sans possibilité de t'exprimer la seul chose que je te laisserai évacuer c'est soit ton urine soit ton liquide de couleur blanche qui se frottera sur mon pénis et qui me permettras de bien glisser entre les parois de ta chatte  
+Pense a ce  moment ou jpouraais excaucé tout tes désir ce moment où tout tes désirs seront des ordres et deviendrons une réalité , pense à ce moment la Délicia une fois que t'y as pensé dis moi quand voudrais tu faire tout cela ?
 
-Tu as tout réussi, jusqu'au bout. Voici ta dernière surprise.
-
-[Écris ici ta lettre personnalisée pour ce niveau...]
-
-Je t'aime.`;
+// ===================================================== //
+// NUMERO WHATSAPP — utilisé par le bouton "Partager ma réponse" des
+// questions ouvertes. Format attendu : indicatif + numéro, SANS le "+",
+// SANS espaces (ex: 2290169515730 pour +229 01 69 51 57 30).
+// Vérifie ce format une fois le site en ligne en cliquant toi-même sur
+// le bouton de partage, pour confirmer que ça ouvre bien la bonne
+// conversation WhatsApp.
+// ===================================================== //
+const WHATSAPP_NUMBER = "2290169515730";
 
 // ===================================================== //
 // CONFIGURATION DES 4 NIVEAUX
@@ -782,6 +1232,22 @@ function renderQuestion(){
   document.getElementById('question-text').textContent = q.text;
 
   const choicesWrap = document.getElementById('choices');
+  const openWrap = document.getElementById('open-question-wrap');
+
+  if(q.type === 'open'){
+    choicesWrap.style.display = 'none';
+    choicesWrap.innerHTML = '';
+    openWrap.style.display = 'block';
+    const textarea = document.getElementById('open-answer-input');
+    const continueBtn = document.getElementById('btn-continue-open');
+    textarea.value = '';
+    continueBtn.disabled = true;
+    textarea.focus();
+    return;
+  }
+
+  openWrap.style.display = 'none';
+  choicesWrap.style.display = 'grid';
   choicesWrap.innerHTML = '';
   const letters = ['A','B','C','D','E','F'];
 
@@ -851,15 +1317,43 @@ function nextQuestion(){
   }
 }
 
+/* ---------------- Questions ouvertes (réponse libre + partage WhatsApp) ---------------- */
+function shareAnswerOnWhatsApp(){
+  const q = currentLevel.questions[currentIndex];
+  const answer = document.getElementById('open-answer-input').value.trim();
+  if(!answer) return;
+  const message = "💬 Question : " + q.text + "\n\n📝 Ma réponse : " + answer;
+  const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+  window.open(url, '_blank');
+}
+
+function continueFromOpenQuestion(){
+  const answer = document.getElementById('open-answer-input').value.trim();
+  if(!answer) return;
+  // Les questions ouvertes ne comptent pas dans le score (voir finishLevel)
+  currentIndex++;
+  const total = currentLevel.questions.length;
+  if(currentIndex < total){
+    renderQuestion();
+  } else {
+    document.getElementById('progress-fill').style.width = '100%';
+    finishLevel();
+  }
+}
+
 /* ---------------- Ecran : résultat (généré dynamiquement) ---------------- */
+function getScorableTotal(level){
+  return level.questions.filter(function(q){ return q.type !== 'open'; }).length;
+}
+
 function finishLevel(){
   showScreen('result');
-  const total = currentLevel.questions.length;
-  const isPerfect = score >= total; // score parfait obligatoire
+  const scorableTotal = getScorableTotal(currentLevel);
+  const isPerfect = score >= scorableTotal; // score parfait obligatoire (hors questions ouvertes)
   if(isPerfect){
     renderRewardScreen(currentLevel);
   } else {
-    renderRetrySkipScreen(currentLevel, score, total);
+    renderRetrySkipScreen(currentLevel, score, scorableTotal);
   }
 }
 
@@ -886,7 +1380,7 @@ function renderRewardScreen(level){
   unlockNext(level.id, 'won');
   rampVolume(0.65, 800); // la musique s'intensifie à la fin du niveau
   const card = document.getElementById('result-card');
-  const total = level.questions.length;
+  const total = getScorableTotal(level);
 
   card.innerHTML =
     '<div class="heart-loop">🎉</div>' +
@@ -1241,6 +1735,12 @@ document.getElementById('btn-back-to-levels').addEventListener('click', function
   showScreen('levels');
   renderLevelList();
 });
+
+document.getElementById('open-answer-input').addEventListener('input', function(){
+  document.getElementById('btn-continue-open').disabled = this.value.trim().length === 0;
+});
+document.getElementById('btn-share-whatsapp').addEventListener('click', shareAnswerOnWhatsApp);
+document.getElementById('btn-continue-open').addEventListener('click', continueFromOpenQuestion);
 
 setupMusicPlayer();
 spawnPetals();
